@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <!--Species type colors-->
+    <color name="normalType">#A8A77A</color>
+    <color name="fireType">#EE8130</color>
+    <color name="waterType">#6390F0</color>
+    <color name="electricType">#F7D02C</color>
+    <color name="grassType">#7AC74C</color>
+    <color name="iceType">#96D9D6</color>
+    <color name="fightingType">#C22E28</color>
+    <color name="poisonType">#A33EA1</color>
+    <color name="groundType">#E2BF65</color>
+    <color name="flyingType">#A98FF3</color>
+    <color name="psychicType">#F95587</color>
+    <color name="bugType">#A6B91A</color>
+    <color name="rockType">#B6A136</color>
+    <color name="ghostType">#735797</color>
+    <color name="dragonType">#6F35FC</color>
+    <color name="darkType">#705746</color>
+    <color name="steelType">#B7B7CE</color>
+    <color name="fairyType">#D685AD</color>
+
+</resources>
