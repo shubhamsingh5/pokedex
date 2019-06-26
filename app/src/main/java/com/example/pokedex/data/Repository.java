@@ -43,7 +43,7 @@ public class Repository {
         this.db = PokemonDatabase.getInstance(context);
     }
 
-    public Observable<Resource<List<Pokemon>>> getAllPokemon() {
+    public Observable<Resource<List<Pokemon>>> getAllPokemon(int offset) {
         return new NetworkBoundResource<List<Pokemon>, PokeApiResponse>() {
 
             @Override
@@ -68,7 +68,7 @@ public class Repository {
             @NonNull
             @Override
             protected Observable<Resource<PokeApiResponse>> createCall() {
-                return webService.loadPokemons()
+                return webService.loadPokemons(offset)
                         .flatMap(pokeApiResponse -> Observable.just(pokeApiResponse == null
                                 ? Resource.error("", new PokeApiResponse())
                                 : Resource.success(pokeApiResponse)));

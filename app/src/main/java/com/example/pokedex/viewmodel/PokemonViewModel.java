@@ -27,8 +27,8 @@ public class PokemonViewModel extends ViewModel {
         data = new MutableLiveData<>();
     }
 
-    public void loadPokemonFromApi() {
-        repo.getAllPokemon()
+    public void loadPokemonFromApi(int offset) {
+        repo.getAllPokemon(offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> getPokemons().postValue(res));
