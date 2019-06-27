@@ -14,7 +14,8 @@ public class AbilityResponseTypeConverter {
 
     @TypeConverter
     public List<AbilityApiResponse> fromString(String value) {
-        Type listType = new TypeToken<List<AbilityApiResponse>>() {}.getType();
+        Type listType = new TypeToken<List<AbilityApiResponse>>() {
+        }.getType();
         List<AbilityApiResponse> abilities = new Gson().fromJson(value, listType);
         return abilities;
     }

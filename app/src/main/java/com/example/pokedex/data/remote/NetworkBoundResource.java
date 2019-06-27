@@ -45,16 +45,21 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         );
     }
 
-    public Observable<Resource<ResultType>> getAsObservable() {return result;}
+    public Observable<Resource<ResultType>> getAsObservable() {
+        return result;
+    }
 
-    protected void onFetchFailed() {}
+    protected void onFetchFailed() {
+    }
 
     @WorkerThread
-    protected RequestType processResponse(Resource<RequestType> response) {return response.data;}
+    protected RequestType processResponse(Resource<RequestType> response) {
+        return response.data;
+    }
 
     /* Responsible for updating/inserting the result of the API into the local database.
-    *  Method is called when the data from the remote server is succesfully fetched
-    */
+     *  Method is called when the data from the remote server is succesfully fetched
+     */
     @WorkerThread
     protected abstract void saveCallResult(@NonNull RequestType item);
 

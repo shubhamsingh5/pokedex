@@ -52,19 +52,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0) //check for scroll down
-                {
+                //check for scroll down
+                if (dy > 0) {
                     visibleItemCount = gridLayoutManager.getChildCount();
                     totalItemCount = gridLayoutManager.getItemCount();
                     pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition();
 
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false;
                             //Do pagination.. i.e. fetch new data
-                            offset+=20;
+                            offset += 20;
                             vm.loadPokemonFromApi(offset);
                             loading = true;
                         }

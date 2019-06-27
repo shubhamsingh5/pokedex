@@ -25,12 +25,16 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     private Context context;
     public class PokedexEntryViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
+        public TextView dex_num;
+        public TextView list_num;
         public ImageView image;
         public CardView cv;
 
         public PokedexEntryViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.poke_name);
+            dex_num = view.findViewById(R.id.dex_num);
+            list_num = view.findViewById(R.id.list_num);
             image = view.findViewById(R.id.poke_img);
             cv = view.findViewById(R.id.poke_cv);
         }
@@ -52,12 +56,14 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     @Override
     public void onBindViewHolder(@NonNull PokedexEntryViewHolder holder, int position) {
         Pokemon result = pokemons.get(position);
-        holder.name.setText(result.getName());
+        holder.name.setText(result.getName().toUpperCase());
+        holder.dex_num.setText(Integer.toString(result.getId()));
+        holder.list_num.setText(Integer.toString(position));
         List<TypeApiResponse> types = pokemons.get(position).getTypes();
         String type = types.get(types.size()-1).getType().getName();
         setCardBackground(type, holder);
 
-        int id = position + 1;
+        int id = result.getId();
         Glide.with(context)
                 .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png")
                 .centerCrop()
