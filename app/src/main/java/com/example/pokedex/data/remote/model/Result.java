@@ -22,7 +22,9 @@ public class Result {
     }
 
     public String getUrl() {
-        return url;
+        String s = url;
+        s = s.substring(0, s.length() - (s.endsWith("/") ? 1 : 0));
+        return s;
     }
 
     public void setUrl(String url) {

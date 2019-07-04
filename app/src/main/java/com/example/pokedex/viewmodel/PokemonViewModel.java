@@ -7,17 +7,17 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.pokedex.data.Repository;
 import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.Resource;
 
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PokemonViewModel extends ViewModel {
     private Repository repo;
-    private MutableLiveData<Resource<List<Pokemon>>> data;
+    private MutableLiveData<Resource<List<PokemonOverview>>> data;
 
     public void init(Context context) {
         if (data != null) {
@@ -34,7 +34,7 @@ public class PokemonViewModel extends ViewModel {
                 .subscribe(res -> getPokemons().postValue(res));
     }
 
-    public MutableLiveData<Resource<List<Pokemon>>> getPokemons() {
+    public MutableLiveData<Resource<List<PokemonOverview>>> getPokemons() {
         return data;
     }
 }

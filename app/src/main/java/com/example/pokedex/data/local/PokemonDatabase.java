@@ -13,8 +13,9 @@ import com.example.pokedex.data.local.converter.StatResponseTypeConverter;
 import com.example.pokedex.data.local.converter.TypeResponseTypeConverter;
 import com.example.pokedex.data.local.dao.PokemonDAO;
 import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.PokemonOverview;
 
-@Database(entities = {Pokemon.class}, version = 1, exportSchema = false)
+@Database(entities = {Pokemon.class, PokemonOverview.class}, version = 1, exportSchema = false)
 @TypeConverters({AbilityResponseTypeConverter.class, MoveResponseTypeConverter.class,
         StatResponseTypeConverter.class, TypeResponseTypeConverter.class})
 public abstract class PokemonDatabase extends RoomDatabase {

@@ -1,6 +1,7 @@
 package com.example.pokedex.data.remote.api;
 
 import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
 
 import io.reactivex.Observable;
@@ -14,5 +15,5 @@ public interface PokeApiService {
     Observable<PokeApiResponse> loadPokemons(@Query("offset") int offset);
 
     @GET
-    Observable<Pokemon> getPokemonDetail(@Url String url);
+    Observable<PokemonOverview> getPokemonDetail(@Url String url);
 }

@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="title_activity_pokemon_detail">PokemonDetailActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="detail_height_caption">Height</string>
+    <string name="pokemon_image_desc">Pokemon image</string>
+    <string name="detail_weight_caption">Weight</string>
+    <string name="detail_abilities_caption">Abilities</string>
+    <string name="stat_hp">HP</string>
+    <string name="stat_attack">Attack</string>
+    <string name="stat_defense">Defense</string>
+    <string name="stat_sp_attack">Sp. Attack</string>
+    <string name="stat_sp_defense">Sp. Defense</string>
+    <string name="stat_speed">Speed</string>
 </resources>

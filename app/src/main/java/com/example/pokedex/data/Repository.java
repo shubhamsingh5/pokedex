@@ -2,12 +2,14 @@ package com.example.pokedex.data;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.pokedex.data.local.PokemonDatabase;
 import com.example.pokedex.data.local.dao.PokemonDAO;
 import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.NetworkBoundResource;
 import com.example.pokedex.data.remote.Resource;
 import com.example.pokedex.data.remote.api.PokeApiService;
@@ -16,14 +18,19 @@ import com.example.pokedex.data.remote.model.PokeApiResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Repository {
 
@@ -43,15 +50,16 @@ public class Repository {
         this.db = PokemonDatabase.getInstance(context);
     }
 
-    public Observable<Resource<List<Pokemon>>> getAllPokemon(int offset) {
-        return new NetworkBoundResource<List<Pokemon>, PokeApiResponse>() {
+    public Observable<Resource<List<PokemonOverview>>> getAllPokemon(int offset) {
+        return new NetworkBoundResource<List<PokemonOverview>, PokeApiResponse>() {
 
             @Override
             protected void saveCallResult(@NonNull PokeApiResponse item) {
                 Observable.fromIterable(item.getResults())
                         .concatMap(pokemon -> webService.getPokemonDetail(pokemon.getUrl()))
                         .toList()
-                        .subscribe(list -> db.pokemonDAO().insertPokemon(list));
+                        .subscribe(list -> db.pokemonDAO().insertPokemonOverview(list),
+                                throwable -> Log.e(TAG, throwable.getMessage(), throwable));
             }
 
             @Override
@@ -61,8 +69,8 @@ public class Repository {
 
             @NonNull
             @Override
-            protected Flowable<List<Pokemon>> loadFromDb() {
-                return db.pokemonDAO().getAllPokemons();
+            protected Flowable<List<PokemonOverview>> loadFromDb() {
+                return db.pokemonDAO().getAllPokemonsOverview();
             }
 
             @NonNull

@@ -16,32 +16,51 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.R;
 import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.model.type.TypeApiResponse;
 
 import java.util.List;
 
 public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.PokedexEntryViewHolder> {
-    private final List<Pokemon> pokemons;
+    private final List<PokemonOverview> pokemonOverviews;
+    private RecyclerViewClickListener listener;
     private Context context;
-    public class PokedexEntryViewHolder extends RecyclerView.ViewHolder {
+
+    public class PokedexEntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name;
         public TextView dex_num;
         public TextView list_num;
         public ImageView image;
         public CardView cv;
 
-        public PokedexEntryViewHolder(View view) {
+        RecyclerViewClickListener recyclerViewClickListener;
+
+
+        public PokedexEntryViewHolder(View view, RecyclerViewClickListener recyclerViewClickListener) {
             super(view);
             name = view.findViewById(R.id.poke_name);
             dex_num = view.findViewById(R.id.dex_num);
             list_num = view.findViewById(R.id.list_num);
             image = view.findViewById(R.id.poke_img);
             cv = view.findViewById(R.id.poke_cv);
+            this.recyclerViewClickListener = recyclerViewClickListener;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            recyclerViewClickListener.onClick(getAdapterPosition());
         }
     }
 
-    public PokemonListAdapter(List<Pokemon> pokemons, Context context) {
-        this.pokemons = pokemons;
+    public interface RecyclerViewClickListener {
+        void onClick(int pos);
+    }
+
+
+    public PokemonListAdapter(List<PokemonOverview> pokemonOverviews, Context context, RecyclerViewClickListener listener) {
+        this.listener = listener;
+        this.pokemonOverviews = pokemonOverviews;
         this.context = context;
     }
 
@@ -50,16 +69,16 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     public PokedexEntryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.pokemon_list_item, parent, false);
-        return new PokedexEntryViewHolder(itemView);
+        return new PokedexEntryViewHolder(itemView, listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PokedexEntryViewHolder holder, int position) {
-        Pokemon result = pokemons.get(position);
+        PokemonOverview result = pokemonOverviews.get(position);
         holder.name.setText(result.getName().toUpperCase());
         holder.dex_num.setText(Integer.toString(result.getId()));
         holder.list_num.setText(Integer.toString(position));
-        List<TypeApiResponse> types = pokemons.get(position).getTypes();
+        List<TypeApiResponse> types = pokemonOverviews.get(position).getTypes();
         String type = types.get(types.size()-1).getType().getName();
         setCardBackground(type, holder);
 
@@ -73,7 +92,7 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
 
     @Override
     public int getItemCount() {
-        return pokemons.size();
+        return pokemonOverviews.size();
     }
 
     private void setCardBackground(String type, @NonNull PokedexEntryViewHolder holder) {

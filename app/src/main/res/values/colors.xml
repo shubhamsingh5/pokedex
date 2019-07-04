@@ -3,7 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-
+    <color name="pokemonTheme">#FF0000</color>
+    <color name="pokemonThemeDark">#CC0000</color>
     <!--Species type colors-->
     <color name="normalType">#A8A77A</color>
     <color name="fireType">#EE8130</color>

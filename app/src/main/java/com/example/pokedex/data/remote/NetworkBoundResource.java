@@ -1,5 +1,7 @@
 package com.example.pokedex.data.remote;
 
+import android.util.Log;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
