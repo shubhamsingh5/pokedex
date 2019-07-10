@@ -4,37 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.pokedex.R;
+import com.example.pokedex.utils.NavigationUtils;
+import com.example.pokedex.view.fragment.PokemonDetailBaseFragment;
+import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.MenuItem;
 import android.widget.TextView;
 
 public class PokemonDetailActivity extends AppCompatActivity {
+
     private TextView mTextMessage;
+    private PokemonDetailViewModel vm;
     private int pokemonId;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_summary:
+                        NavigationUtils.setFragment(new PokemonDetailBaseFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
+                        return true;
+                    case R.id.navigation_moves:
+                        //load move fragment
+                        return true;
+                    case R.id.navigation_stats:
+                        //load stats fragment
+                        return true;
+                }
+                return false;
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,17 @@ public class PokemonDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_detail);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra("pokemon id");
+        int pokemonId = intent.getIntExtra("pokemon_id", 1);
+
+
+        vm = ViewModelProviders.of(this).get(PokemonDetailViewModel.class);
+        vm.init(this);
+        vm.getPokemonDetailFromApi(pokemonId);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.message);
-        mTextMessage.setText(message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.getMenu().performIdentifierAction(R.id.nav_view, 0);
+        navView.setSelectedItemId(R.id.navigation_summary);
     }
 
 }

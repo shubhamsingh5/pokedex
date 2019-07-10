@@ -15,7 +15,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class PokemonViewModel extends ViewModel {
+public class PokemonListViewModel extends ViewModel {
     private Repository repo;
     private MutableLiveData<Resource<List<PokemonOverview>>> data;
 

@@ -9,15 +9,17 @@ import androidx.room.TypeConverters;
 
 import com.example.pokedex.data.local.converter.AbilityResponseTypeConverter;
 import com.example.pokedex.data.local.converter.MoveResponseTypeConverter;
+import com.example.pokedex.data.local.converter.SpeciesResponseTypeConverter;
 import com.example.pokedex.data.local.converter.StatResponseTypeConverter;
 import com.example.pokedex.data.local.converter.TypeResponseTypeConverter;
 import com.example.pokedex.data.local.dao.PokemonDAO;
 import com.example.pokedex.data.local.entity.Pokemon;
 import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.remote.model.species.SpeciesApiResponse;
 
 @Database(entities = {Pokemon.class, PokemonOverview.class}, version = 1, exportSchema = false)
 @TypeConverters({AbilityResponseTypeConverter.class, MoveResponseTypeConverter.class,
-        StatResponseTypeConverter.class, TypeResponseTypeConverter.class})
+        StatResponseTypeConverter.class, TypeResponseTypeConverter.class, SpeciesResponseTypeConverter.class})
 public abstract class PokemonDatabase extends RoomDatabase {
 
     private static PokemonDatabase INSTANCE;

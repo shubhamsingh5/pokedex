@@ -5,9 +5,10 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.pokedex.data.local.converter.AbilityResponseTypeConverter;
-import com.example.pokedex.data.local.converter.MoveResponseTypeConverter;
+import com.example.pokedex.data.local.converter.SpeciesResponseTypeConverter;
 import com.example.pokedex.data.local.converter.StatResponseTypeConverter;
 import com.example.pokedex.data.local.converter.TypeResponseTypeConverter;
+import com.example.pokedex.data.remote.model.species.SpeciesApiResponse;
 import com.example.pokedex.data.remote.model.ability.AbilityApiResponse;
 import com.example.pokedex.data.remote.model.move.MoveApiResponse;
 import com.example.pokedex.data.remote.model.stat.StatApiResponse;
@@ -19,9 +20,10 @@ import java.util.List;
 
 @Entity(tableName = "pokemons")
 public class Pokemon {
+
+    @TypeConverters(AbilityResponseTypeConverter.class)
     @SerializedName("abilities")
     @Expose
-    @TypeConverters(AbilityResponseTypeConverter.class)
     private List<AbilityApiResponse> abilities = null;
 
     @SerializedName("base_experience")
@@ -43,21 +45,29 @@ public class Pokemon {
 
     @SerializedName("moves")
     @Expose
-    @TypeConverters(MoveResponseTypeConverter.class)
-    private List<MoveApiResponse> moves;
+    private List<MoveApiResponse> moves = null;
 
     @SerializedName("name")
     @Expose
     private String name;
 
+    @SerializedName("order")
+    @Expose
+    private Integer order;
+
+    @TypeConverters(SpeciesResponseTypeConverter.class)
+    @SerializedName("species")
+    @Expose
+    private SpeciesApiResponse species;
+
+    @TypeConverters(StatResponseTypeConverter.class)
     @SerializedName("stats")
     @Expose
-    @TypeConverters(StatResponseTypeConverter.class)
     private List<StatApiResponse> stats = null;
 
+    @TypeConverters(TypeResponseTypeConverter.class)
     @SerializedName("types")
     @Expose
-    @TypeConverters(TypeResponseTypeConverter.class)
     private List<TypeApiResponse> types = null;
 
     @SerializedName("weight")
@@ -104,12 +114,36 @@ public class Pokemon {
         this.locationAreaEncounters = locationAreaEncounters;
     }
 
+    public List<MoveApiResponse> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<MoveApiResponse> moves) {
+        this.moves = moves;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    public SpeciesApiResponse getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(SpeciesApiResponse species) {
+        this.species = species;
     }
 
     public List<StatApiResponse> getStats() {
@@ -134,13 +168,5 @@ public class Pokemon {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
-    }
-
-    public List<MoveApiResponse> getMoves() {
-        return moves;
-    }
-
-    public void setMoves(List<MoveApiResponse> moves) {
-        this.moves = moves;
     }
 }

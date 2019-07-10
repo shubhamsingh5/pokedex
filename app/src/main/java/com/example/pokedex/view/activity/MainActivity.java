@@ -12,7 +12,7 @@ import android.os.Bundle;
 import com.example.pokedex.R;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.view.adapter.PokemonListAdapter;
-import com.example.pokedex.viewmodel.PokemonViewModel;
+import com.example.pokedex.viewmodel.PokemonListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
     private RecyclerView rv;
     GridLayoutManager gridLayoutManager;
     PokemonListAdapter adapter;
-    PokemonViewModel vm;
+    PokemonListViewModel vm;
     List<PokemonOverview> pokemonOverviews = new ArrayList<>();
     private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount, offset;
+    int pastVisibleItems, visibleItemCount, totalItemCount, offset;
 
 
     @Override
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         rv = findViewById(R.id.rv);
         pokemonOverviews = new ArrayList<>();
         initView();
-        vm = ViewModelProviders.of(this).get(PokemonViewModel.class);
+        vm = ViewModelProviders.of(this).get(PokemonListViewModel.class);
         vm.init(this);
         offset = 0;
         vm.loadPokemonFromApi(offset);
@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
                 if (dy > 0) {
                     visibleItemCount = gridLayoutManager.getChildCount();
                     totalItemCount = gridLayoutManager.getItemCount();
-                    pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPosition();
+                    pastVisibleItems = gridLayoutManager.findFirstVisibleItemPosition();
 
                     if (loading) {
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                             loading = false;
                             //Do pagination.. i.e. fetch new data
                             offset += 20;

@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.pokedex.data.local.PokemonDatabase;
-import com.example.pokedex.data.local.dao.PokemonDAO;
 import com.example.pokedex.data.local.entity.Pokemon;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.NetworkBoundResource;
@@ -15,20 +14,13 @@ import com.example.pokedex.data.remote.Resource;
 import com.example.pokedex.data.remote.api.PokeApiService;
 import com.example.pokedex.data.remote.api.RetrofitClient;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
+import com.example.pokedex.data.remote.model.species.Species;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
+import io.reactivex.functions.BiFunction;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -56,7 +48,7 @@ public class Repository {
             @Override
             protected void saveCallResult(@NonNull PokeApiResponse item) {
                 Observable.fromIterable(item.getResults())
-                        .concatMap(pokemon -> webService.getPokemonDetail(pokemon.getUrl()))
+                        .concatMap(pokemon -> webService.getPokemonOverview(pokemon.getUrl()))
                         .toList()
                         .subscribe(list -> db.pokemonDAO().insertPokemonOverview(list),
                                 throwable -> Log.e(TAG, throwable.getMessage(), throwable));
@@ -83,9 +75,49 @@ public class Repository {
 
 //                return webService.loadPokemons()
 //                        .flatMap(pokeApiResponse -> Observable.fromIterable(pokeApiResponse.getResults()))
-//                        .concatMap(pokemon -> webService.getPokemonDetail(pokemon.getUrl()))
+//                        .concatMap(pokemon -> webService.getPokemonOverview(pokemon.getUrl()))
 //                        .toList()
 //                        .toObservable();
+            }
+        }.getAsObservable();
+    }
+
+    public Observable<Resource<Pokemon>> getPokemonDetail(int id) {
+        return new NetworkBoundResource<Pokemon, Pokemon>() {
+            @Override
+            protected void saveCallResult(@NonNull Pokemon item) {
+                db.pokemonDAO().insertPokemonDetail(item);
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<Pokemon> loadFromDb() {
+                return db.pokemonDAO().getPokemonDetailById(id);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<Pokemon>> createCall() {
+                return webService.getPokemonDetail(id)
+                        .flatMap(pokemon -> Observable.just(pokemon == null
+                                ? Resource.error("", new Pokemon())
+                                : Resource.success(pokemon)));
+
+//                Observable<Pokemon> pokemonResult = webService.getPokemonDetail(id);
+//                Observable<Species> speciesResult = webService.getPokemonSpecies(id);
+//                return Observable.zip(pokemonResult, speciesResult, (pokemon, species) -> {
+//                    if (pokemon == null) {
+//                        return Resource.error("", new Pokemon());
+//                    } else {
+//                        pokemon.setSpeciesDetail(species);
+//                        return Resource.success(pokemon);
+//                    }
+//                });
             }
         }.getAsObservable();
     }
