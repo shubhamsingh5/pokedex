@@ -1,10 +1,21 @@
-package com.example.pokedex.data.remote.model.species;
+package com.example.pokedex.data.local.entity;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.List;
 
+import com.example.pokedex.data.local.converter.FlavorTextTypeConverter;
+import com.example.pokedex.data.local.converter.GeneraTypeConverter;
+import com.example.pokedex.data.local.converter.HabitatTypeConverter;
+import com.example.pokedex.data.remote.model.species.FlavorTextEntry;
+import com.example.pokedex.data.remote.model.species.Genera;
+import com.example.pokedex.data.remote.model.species.Habitat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "pokemons_species")
 public class Species {
 
     @SerializedName("base_happiness")
@@ -23,18 +34,16 @@ public class Species {
 //    @Expose
 //    private EvolutionChain evolutionChain;
 
+    @TypeConverters(FlavorTextTypeConverter.class)
     @SerializedName("flavor_text_entries")
     @Expose
     private List<FlavorTextEntry> flavorTextEntries = null;
-
-    @SerializedName("form_descriptions")
-    @Expose
-    private List<Object> formDescriptions = null;
 
     @SerializedName("gender_rate")
     @Expose
     private Integer genderRate;
 
+    @TypeConverters(GeneraTypeConverter.class)
     @SerializedName("genera")
     @Expose
     private List<Genera> genera = null;
@@ -47,6 +56,7 @@ public class Species {
 //    @Expose
 //    private GrowthRate growthRate;
 
+    @TypeConverters(HabitatTypeConverter.class)
     @SerializedName("habitat")
     @Expose
     private Habitat habitat;
@@ -59,6 +69,7 @@ public class Species {
     @Expose
     private Integer hatchCounter;
 
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -112,13 +123,6 @@ public class Species {
         this.flavorTextEntries = flavorTextEntries;
     }
 
-    public List<Object> getFormDescriptions() {
-        return formDescriptions;
-    }
-
-    public void setFormDescriptions(List<Object> formDescriptions) {
-        this.formDescriptions = formDescriptions;
-    }
 
     public Integer getGenderRate() {
         return genderRate;

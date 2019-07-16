@@ -2,12 +2,15 @@ package com.example.pokedex.viewmodel;
 
 import android.content.Context;
 
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pokedex.data.Repository;
-import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.data.remote.Resource;
+import com.example.pokedex.data.local.entity.Species;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -15,24 +18,63 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PokemonDetailViewModel extends ViewModel {
     private Repository repo;
-    private MutableLiveData<Resource<Pokemon>> data;
+    private MutableLiveData<Resource<PokemonOverview>> pokemonData;
+    private MutableLiveData<Resource<Species>> speciesData;
+    private MediatorLiveData<Resource<PokemonDetail>> pokemonDetail;
 
     public void init(Context context) {
-        if (data != null) {
+        if (pokemonDetail != null) {
             return;
         }
         repo = Repository.getInstance(context);
-        data = new MutableLiveData<>();
+        pokemonData = new MutableLiveData<>();
+        speciesData = new MutableLiveData<>();
+        pokemonDetail = new MediatorLiveData<>();
     }
 
-    public void getPokemonDetailFromApi(int id) {
+    public void getPokemonDetail(int id) {
+        getPokemonData(id);
+        getPokemonSpecies(id);
+        pokemonDetail.addSource(getPokemonData(), res -> {
+            PokemonDetail detail = null;
+            if (res != null && res.isLoaded()) {
+                detail = new PokemonDetail(res.data);
+                pokemonDetail.setValue(Resource.success(detail));
+            }
+        });
+
+        pokemonDetail.addSource(getSpeciesData(), res -> {
+            PokemonDetail detail = pokemonDetail.getValue().data;
+            if (res != null && res.isLoaded()) {
+                detail.setSpecies(res.data);
+                pokemonDetail.setValue(Resource.success(detail));
+            }
+        });
+    }
+
+    private void getPokemonData(int id) {
         repo.getPokemonDetail(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> getPokemon().postValue(res));
+                .subscribe(res -> getPokemonData().postValue(res));
     }
 
-    public MutableLiveData<Resource<Pokemon>> getPokemon() {
-        return data;
+    private void getPokemonSpecies(int id) {
+        repo.getPokemonSpecies(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> getSpeciesData().postValue(res));
+    }
+
+    public MutableLiveData<Resource<PokemonOverview>> getPokemonData() {
+        return pokemonData;
+    }
+
+    public MutableLiveData<Resource<Species>> getSpeciesData() {
+        return speciesData;
+    }
+
+    public MediatorLiveData<Resource<PokemonDetail>> getPokemon() {
+        return pokemonDetail;
     }
 }

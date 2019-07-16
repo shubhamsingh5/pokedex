@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.pokedex.R;
 import com.example.pokedex.data.local.entity.PokemonOverview;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
 
     private RecyclerView rv;
     GridLayoutManager gridLayoutManager;
+    ProgressBar pb;
     PokemonListAdapter adapter;
     PokemonListViewModel vm;
     List<PokemonOverview> pokemonOverviews = new ArrayList<>();
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         setContentView(R.layout.activity_main);
 
         rv = findViewById(R.id.rv);
+        pb = findViewById(R.id.progressBar);
         pokemonOverviews = new ArrayList<>();
         initView();
         vm = ViewModelProviders.of(this).get(PokemonListViewModel.class);
@@ -41,7 +45,11 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         offset = 0;
         vm.loadPokemonFromApi(offset);
         vm.getPokemons().observe(this, resource -> {
-            if (!resource.data.isEmpty()) {
+            if (resource.isLoading()) {
+                pb.setVisibility(View.VISIBLE);
+            }
+            else if (resource.isLoaded() && !resource.data.isEmpty()) {
+                pb.setVisibility(View.GONE);
                 pokemonOverviews.clear();
                 pokemonOverviews.addAll(resource.data);
                 setupRV();
@@ -91,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
     @Override
     public void onClick(int pos) {
         Intent intent = new Intent(this, PokemonDetailActivity.class);
-        String message = Integer.toString(pos + 1);
-        intent.putExtra("pokemon id", message);
+        int message = pos + 1;
+        intent.putExtra("pokemon_id", message);
         startActivity(intent);
     }
 }

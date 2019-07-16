@@ -52,6 +52,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     }
 
     protected void onFetchFailed() {
+        Log.e("RxJava:", "onfetchfailed");
     }
 
     @WorkerThread

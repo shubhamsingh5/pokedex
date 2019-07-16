@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.R;
-import com.example.pokedex.data.local.entity.Pokemon;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.model.type.TypeApiResponse;
 

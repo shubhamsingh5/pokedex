@@ -3,9 +3,10 @@
 <layout>
 
     <data>
+        <import type="android.view.View"/>
         <variable
-            name="pokemon"
-            type="com.example.pokedex.data.local.entity.Pokemon" />
+            name="pokemonDetail"
+            type="com.example.pokedex.data.remote.model.PokemonDetail" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/detail_constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -40,9 +41,9 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="64dp"
                     android:layout_marginEnd="8dp"
+                    android:text="@{pokemonDetail.name}"
                     android:textAllCaps="true"
                     android:textSize="32sp"
-                    android:text="@{pokemon.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -54,12 +55,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="28dp"
+                    android:text="@{pokemonDetail.species.genera.get(2).genus}"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_name"
-                    android:text="Seed Pokemon" />
-                    <!--android:text="@{pokemon.speciesDetail.genera.get(2).genus}"-->
+                    app:layout_constraintTop_toBottomOf="@+id/detail_name" />
 
                 <TextView
                     android:id="@+id/detail_type1"
@@ -97,22 +97,21 @@
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
                     android:padding="0dp"
+                    android:text="@{pokemonDetail.species.flavorTextEntries.get(2).flavorText}"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/detail_genera"
-                    android:text="Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun’s rays,the seed grows progressively larger." />
-                <!--android:text="@{pokemon.speciesDetail.flavorTextEntries.get(2).flavorText}"-->
+                    app:layout_constraintTop_toBottomOf="@+id/detail_genera" />
 
                 <TextView
                     android:id="@+id/detail_height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:text="@{String.valueOf(pokemonDetail.height)}"
                     android:textSize="16sp"
-                    android:text="@{String.valueOf(pokemon.height)}"
                     app:layout_constraintStart_toEndOf="@+id/detail_height_caption"
                     app:layout_constraintTop_toTopOf="@+id/detail_height_caption"
                     tools:text="0.71 m" />
@@ -134,10 +133,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:text="@{String.valueOf(pokemonDetail.weight)}"
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/detail_weight_caption"
                     app:layout_constraintTop_toTopOf="@+id/detail_weight_caption"
-                    android:text="@{String.valueOf(pokemon.weight)}"
                     tools:text="6.9 kg" />
 
                 <TextView
@@ -180,7 +179,6 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_ability_caption"
-                    android:text="@{pokemon.abilities.get(0).ability.name}"
                     tools:text="Overgrow" />
 
                 <Button
@@ -200,7 +198,6 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_ability1"
-                    android:text="@{pokemon.abilities.get(1).ability.name}"
                     tools:text="Chlorophyll" />
 
 
@@ -216,6 +213,7 @@
             android:contentDescription="@string/pokemon_image_desc"
             android:translationY="-100dp"
             android:translationZ="2dp"
+            app:imageURL="@{pokemonDetail.id}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"

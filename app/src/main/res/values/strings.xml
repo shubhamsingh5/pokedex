@@ -5,7 +5,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="detail_height_caption">Height</string>
-    <string name="pokemon_image_desc">Pokemon image</string>
+    <string name="pokemon_image_desc">PokemonDetail image</string>
     <string name="detail_weight_caption">Weight</string>
     <string name="detail_abilities_caption">Abilities</string>
     <string name="stat_hp">HP</string>

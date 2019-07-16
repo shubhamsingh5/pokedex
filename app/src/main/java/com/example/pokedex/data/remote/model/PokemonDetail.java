@@ -1,91 +1,47 @@
-package com.example.pokedex.data.local.entity;
+package com.example.pokedex.data.remote.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
+import android.content.Context;
+import android.widget.ImageView;
 
-import com.example.pokedex.data.local.converter.AbilityResponseTypeConverter;
-import com.example.pokedex.data.local.converter.SpeciesResponseTypeConverter;
-import com.example.pokedex.data.local.converter.StatResponseTypeConverter;
-import com.example.pokedex.data.local.converter.TypeResponseTypeConverter;
-import com.example.pokedex.data.remote.model.species.SpeciesApiResponse;
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.remote.model.ability.AbilityApiResponse;
 import com.example.pokedex.data.remote.model.move.MoveApiResponse;
 import com.example.pokedex.data.remote.model.stat.StatApiResponse;
 import com.example.pokedex.data.remote.model.type.TypeApiResponse;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity(tableName = "pokemons")
-public class Pokemon {
+public class PokemonDetail {
 
-    @TypeConverters(AbilityResponseTypeConverter.class)
-    @SerializedName("abilities")
-    @Expose
-    private List<AbilityApiResponse> abilities = null;
-
-    @SerializedName("base_experience")
-    @Expose
+    private List<AbilityApiResponse> abilities = new ArrayList<>(2);
     private Integer baseExperience;
-
-    @SerializedName("height")
-    @Expose
     private Integer height;
-
-    @PrimaryKey
-    @SerializedName("id")
-    @Expose
     private Integer id;
-
-    @SerializedName("location_area_encounters")
-    @Expose
     private String locationAreaEncounters;
-
-    @SerializedName("moves")
-    @Expose
     private List<MoveApiResponse> moves = null;
-
-    @SerializedName("name")
-    @Expose
     private String name;
-
-    @SerializedName("order")
-    @Expose
     private Integer order;
-
-    @TypeConverters(SpeciesResponseTypeConverter.class)
-    @SerializedName("species")
-    @Expose
-    private SpeciesApiResponse species;
-
-    @TypeConverters(StatResponseTypeConverter.class)
-    @SerializedName("stats")
-    @Expose
+    private Species species;
     private List<StatApiResponse> stats = null;
-
-    @TypeConverters(TypeResponseTypeConverter.class)
-    @SerializedName("types")
-    @Expose
     private List<TypeApiResponse> types = null;
-
-    @SerializedName("weight")
-    @Expose
     private Integer weight;
 
     public List<AbilityApiResponse> getAbilities() {
         return abilities;
     }
-
     public void setAbilities(List<AbilityApiResponse> abilities) {
-        this.abilities = abilities;
+        this.abilities.addAll(abilities);
     }
 
     public Integer getBaseExperience() {
         return baseExperience;
     }
-
     public void setBaseExperience(Integer baseExperience) {
         this.baseExperience = baseExperience;
     }
@@ -93,7 +49,6 @@ public class Pokemon {
     public Integer getHeight() {
         return height;
     }
-
     public void setHeight(Integer height) {
         this.height = height;
     }
@@ -101,7 +56,6 @@ public class Pokemon {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -109,7 +63,6 @@ public class Pokemon {
     public String getLocationAreaEncounters() {
         return locationAreaEncounters;
     }
-
     public void setLocationAreaEncounters(String locationAreaEncounters) {
         this.locationAreaEncounters = locationAreaEncounters;
     }
@@ -117,7 +70,6 @@ public class Pokemon {
     public List<MoveApiResponse> getMoves() {
         return moves;
     }
-
     public void setMoves(List<MoveApiResponse> moves) {
         this.moves = moves;
     }
@@ -125,7 +77,6 @@ public class Pokemon {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -133,23 +84,20 @@ public class Pokemon {
     public Integer getOrder() {
         return order;
     }
-
     public void setOrder(Integer order) {
         this.order = order;
     }
 
-    public SpeciesApiResponse getSpecies() {
+    public Species getSpecies() {
         return species;
     }
-
-    public void setSpecies(SpeciesApiResponse species) {
+    public void setSpecies(Species species) {
         this.species = species;
     }
 
     public List<StatApiResponse> getStats() {
         return stats;
     }
-
     public void setStats(List<StatApiResponse> stats) {
         this.stats = stats;
     }
@@ -157,7 +105,6 @@ public class Pokemon {
     public List<TypeApiResponse> getTypes() {
         return types;
     }
-
     public void setTypes(List<TypeApiResponse> types) {
         this.types = types;
     }
@@ -165,8 +112,32 @@ public class Pokemon {
     public Integer getWeight() {
         return weight;
     }
-
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
+
+    public PokemonDetail(PokemonOverview overview) {
+        this.abilities = overview.getAbilities();
+        this.baseExperience = overview.getBaseExperience();
+        this.height = overview.getHeight();
+        this.id = overview.getId();
+        this.locationAreaEncounters = overview.getLocationAreaEncounters();
+        this.moves = overview.getMoves();
+        this.name = overview.getName();
+        this.order = overview.getOrder();
+        this.stats = overview.getStats();
+        this.types = overview.getTypes();
+        this.weight = overview.getWeight();
+    }
+
+    @BindingAdapter("imageURL")
+    public static void setImageUrl(ImageView imageView, int id) {
+        Context context = imageView.getContext();
+        Glide.with(context)
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + Integer.toString(id) + ".png")
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
+    }
+
 }

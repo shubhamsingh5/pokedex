@@ -49,7 +49,7 @@ public class PokemonDetailActivity extends AppCompatActivity {
 
         vm = ViewModelProviders.of(this).get(PokemonDetailViewModel.class);
         vm.init(this);
-        vm.getPokemonDetailFromApi(pokemonId);
+        vm.getPokemonDetail(pokemonId);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -57,4 +57,13 @@ public class PokemonDetailActivity extends AppCompatActivity {
         navView.setSelectedItemId(R.id.navigation_summary);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

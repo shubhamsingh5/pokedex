@@ -1,9 +1,9 @@
 package com.example.pokedex.data.remote.api;
 
-import com.example.pokedex.data.local.entity.Pokemon;
 import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
-import com.example.pokedex.data.remote.model.species.Species;
+import com.example.pokedex.data.remote.model.species.SpeciesApiResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -19,11 +19,10 @@ public interface PokeApiService {
     @GET
     Observable<PokemonOverview> getPokemonOverview(@Url String url);
 
-    @GET("pokemon/{id}")
-    Observable<Pokemon> getPokemonDetail(@Path("id") int id);
-
     @GET("pokemon-species/{id}")
     Observable<Species> getPokemonSpecies(@Path("id") int id);
-
+//
+//    @GET
+//    Observable<Species> getSpeciesDetail(@Url String url);
 
 }

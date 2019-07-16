@@ -7,20 +7,20 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.pokedex.data.local.PokemonDatabase;
-import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.Species;
+import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.NetworkBoundResource;
 import com.example.pokedex.data.remote.Resource;
 import com.example.pokedex.data.remote.api.PokeApiService;
 import com.example.pokedex.data.remote.api.RetrofitClient;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
-import com.example.pokedex.data.remote.model.species.Species;
+import com.example.pokedex.data.remote.model.species.SpeciesApiResponse;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.functions.BiFunction;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -51,7 +51,8 @@ public class Repository {
                         .concatMap(pokemon -> webService.getPokemonOverview(pokemon.getUrl()))
                         .toList()
                         .subscribe(list -> db.pokemonDAO().insertPokemonOverview(list),
-                                throwable -> Log.e(TAG, throwable.getMessage(), throwable));
+                                throwable -> Log.e(TAG, throwable.getMessage(), throwable))
+                        .dispose();
             }
 
             @Override
@@ -82,11 +83,11 @@ public class Repository {
         }.getAsObservable();
     }
 
-    public Observable<Resource<Pokemon>> getPokemonDetail(int id) {
-        return new NetworkBoundResource<Pokemon, Pokemon>() {
+    public Observable<Resource<Species>> getPokemonSpecies(int id) {
+        return new NetworkBoundResource<Species, Species>() {
             @Override
-            protected void saveCallResult(@NonNull Pokemon item) {
-                db.pokemonDAO().insertPokemonDetail(item);
+            protected void saveCallResult(@NonNull Species item) {
+                db.pokemonDAO().insertPokemonSpecies(item);
             }
 
             @Override
@@ -96,29 +97,26 @@ public class Repository {
 
             @NonNull
             @Override
-            protected Flowable<Pokemon> loadFromDb() {
-                return db.pokemonDAO().getPokemonDetailById(id);
+            protected Flowable<Species> loadFromDb() {
+                return db.pokemonDAO().getPokemonSpeciesById(id);
             }
 
             @NonNull
             @Override
-            protected Observable<Resource<Pokemon>> createCall() {
-                return webService.getPokemonDetail(id)
-                        .flatMap(pokemon -> Observable.just(pokemon == null
-                                ? Resource.error("", new Pokemon())
-                                : Resource.success(pokemon)));
+            protected Observable<Resource<Species>> createCall() {
 
-//                Observable<Pokemon> pokemonResult = webService.getPokemonDetail(id);
-//                Observable<Species> speciesResult = webService.getPokemonSpecies(id);
-//                return Observable.zip(pokemonResult, speciesResult, (pokemon, species) -> {
-//                    if (pokemon == null) {
-//                        return Resource.error("", new Pokemon());
-//                    } else {
-//                        pokemon.setSpeciesDetail(species);
-//                        return Resource.success(pokemon);
-//                    }
-//                });
+                return webService.getPokemonSpecies(id)
+                        .flatMap(species -> Observable.just(species == null
+                                ? Resource.error("", new Species())
+                                : Resource.success(species)));
             }
         }.getAsObservable();
+    }
+
+    public Observable<Resource<PokemonOverview>> getPokemonDetail(int id) {
+        return db.pokemonDAO().getPokemonDetailById(id)
+                .toObservable()
+                .map(Resource::success)
+                .take(1);
     }
 }

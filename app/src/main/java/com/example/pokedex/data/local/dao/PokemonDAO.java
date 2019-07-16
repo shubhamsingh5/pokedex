@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 
 import java.util.List;
@@ -21,8 +21,11 @@ public interface PokemonDAO {
     Flowable<List<PokemonOverview>> getAllPokemonsOverview();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPokemonDetail(Pokemon pokemon);
+    void insertPokemonSpecies(Species species);
 
-    @Query("SELECT * FROM pokemons where id = :pokemonId LIMIT 1")
-    Flowable<Pokemon> getPokemonDetailById(int pokemonId);
+    @Query("SELECT * FROM pokemons_species where id=:id")
+    Flowable<Species> getPokemonSpeciesById(int id);
+
+    @Query("SELECT * FROM pokemons_overview where id=:id")
+    Flowable<PokemonOverview> getPokemonDetailById(int id);
 }

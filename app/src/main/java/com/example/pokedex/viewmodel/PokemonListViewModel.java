@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pokedex.data.Repository;
-import com.example.pokedex.data.local.entity.Pokemon;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.Resource;
 

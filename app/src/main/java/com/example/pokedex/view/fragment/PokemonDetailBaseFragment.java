@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.R;
-import com.example.pokedex.data.local.entity.Pokemon;
+import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.databinding.PokemonBaseFragmentBinding;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 
@@ -23,7 +23,7 @@ public class PokemonDetailBaseFragment extends Fragment {
 
     private PokemonBaseFragmentBinding binding;
     private PokemonDetailViewModel vm;
-    private Pokemon pokemon;
+    private PokemonDetail pokemonDetail;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -43,22 +43,29 @@ public class PokemonDetailBaseFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.pokemon_base_fragment, container, false);
         vm.getPokemon().observe(getActivity(), pokemonResource -> {
             if (pokemonResource.isLoaded() && pokemonResource != null) {
-                pokemon = pokemonResource.data;
+                pokemonDetail = pokemonResource.data;
                 //initialise view elements
                 //type color and type name
-                binding.detailType1.setText(pokemon.getTypes().get(0).getType().getName());
-                binding.detailType2.setText(pokemon.getTypes().get(1).getType().getName());
-                binding.setPokemon(pokemon);
+                binding.detailType1.setText(pokemonDetail.getTypes().get(0).getType().getName());
+                if (pokemonDetail.getTypes().size() > 1) {
+                    binding.detailType2.setText(pokemonDetail.getTypes().get(1).getType().getName());
+                    setCLBackground(pokemonDetail.getTypes().get(1).getType().getName());
+                } else {
+                    setCLBackground(pokemonDetail.getTypes().get(0).getType().getName());
+                    binding.detailType2.setVisibility(View.GONE);
+                }
+                binding.detailAbility1.setText(pokemonDetail.getAbilities().get(0).getAbility().getName());
+                if (pokemonDetail.getAbilities().size() > 1) {
+                    binding.detailAbility2.setText(pokemonDetail.getAbilities().get(1).getAbility().getName());
+                } else {
+                    binding.detailAbility2.setVisibility(View.GONE);
+                }
+                binding.setPokemonDetail(pokemonDetail);
 
-                //image of pokemon
-                Glide.with(getActivity())
-                        .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getId() + ".png")
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(binding.detailImg);
+                //image of pokemonDetail
+
 
                 //set background
-                setCLBackground(pokemon.getTypes().get(1).getType().getName());
             }
         });
         return binding.getRoot();
