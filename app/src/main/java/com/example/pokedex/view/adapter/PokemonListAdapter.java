@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.R;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.model.type.TypeApiResponse;
+import com.example.pokedex.utils.ColorUtils;
 
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         holder.list_num.setText(Integer.toString(position));
         List<TypeApiResponse> types = pokemonOverviews.get(position).getTypes();
         String type = types.get(types.size()-1).getType().getName();
-        setCardBackground(type, holder);
+        holder.cv.setCardBackgroundColor(ColorUtils.setColorBasedOnType(type, context));
 
         int id = result.getId();
         Glide.with(context)
@@ -92,64 +93,6 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     @Override
     public int getItemCount() {
         return pokemonOverviews.size();
-    }
-
-    private void setCardBackground(String type, @NonNull PokedexEntryViewHolder holder) {
-        switch (type) {
-            case "fire":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.fireType));
-                break;
-            case "water":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.waterType));
-                break;
-            case "electric":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.electricType));
-                break;
-            case "grass":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.grassType));
-                break;
-            case "ice":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.iceType));
-                break;
-            case "fighting":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.fightingType));
-                break;
-            case "poison":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.poisonType));
-                break;
-            case "ground":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.groundType));
-                break;
-            case "flying":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.flyingType));
-                break;
-            case "psychic":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.psychicType));
-                break;
-            case "bug":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.bugType));
-                break;
-            case "rock":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.rockType));
-                break;
-            case "ghost":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.ghostType));
-                break;
-            case "dragon":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.dragonType));
-                break;
-            case "dark":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.darkType));
-                break;
-            case "steel":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.steelType));
-                break;
-            case "fairy":
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.fairyType));
-                break;
-            default:
-                holder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.normalType));
-        }
     }
 
 }

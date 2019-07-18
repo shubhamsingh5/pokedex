@@ -3,6 +3,7 @@ package com.example.pokedex.data;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.GridLayout;
 
 import androidx.annotation.NonNull;
 
@@ -21,6 +22,12 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -57,7 +64,7 @@ public class Repository {
 
             @Override
             protected boolean shouldFetch() {
-                return true;
+                return false;
             }
 
             @NonNull
@@ -83,35 +90,46 @@ public class Repository {
         }.getAsObservable();
     }
 
-    public Observable<Resource<Species>> getPokemonSpecies(int id) {
-        return new NetworkBoundResource<Species, Species>() {
-            @Override
-            protected void saveCallResult(@NonNull Species item) {
-                db.pokemonDAO().insertPokemonSpecies(item);
-            }
-
-            @Override
-            protected boolean shouldFetch() {
-                return true;
-            }
-
-            @NonNull
-            @Override
-            protected Flowable<Species> loadFromDb() {
-                return db.pokemonDAO().getPokemonSpeciesById(id);
-            }
-
-            @NonNull
-            @Override
-            protected Observable<Resource<Species>> createCall() {
-
-                return webService.getPokemonSpecies(id)
-                        .flatMap(species -> Observable.just(species == null
-                                ? Resource.error("", new Species())
-                                : Resource.success(species)));
-            }
-        }.getAsObservable();
+    public Single<Species> getPokemonSpeciesFromDb(int id) {
+        return db.pokemonDAO().getPokemonSpeciesById(id)
+                .onErrorResumeNext(t -> getPokemonSpeciesFromApi(id))
+                .retry();
     }
+
+    public Single<Species> getPokemonSpeciesFromApi(int id) {
+        return webService.getPokemonSpecies(id)
+                .doAfterSuccess(species -> db.pokemonDAO().insertPokemonSpecies(species));
+    }
+
+    //TODO: figure out why this doesn't work
+//    public Observable<Resource<Species>> getPokemonSpecies(int id) {
+//        return new NetworkBoundResource<Species, Species>() {
+//            @Override
+//            protected void saveCallResult(@NonNull Species item) {
+//                db.pokemonDAO().insertPokemonSpecies(item);
+//            }
+//
+//            @Override
+//            protected boolean shouldFetch() {
+//                return true;
+//            }
+//
+//            @NonNull
+//            @Override
+//            protected Flowable<Species> loadFromDb() {
+//                return db.pokemonDAO().getPokemonSpeciesById(id);
+//            }
+//
+//            @NonNull
+//            @Override
+//            protected Observable<Resource<Species>> createCall() {
+//                return webService.getPokemonSpecies(id)
+//                        .flatMap(species -> Observable.just(species == null
+//                                ? Resource.error("", new Species())
+//                                : Resource.success(species)));
+//            }
+//        }.getAsObservable();
+//    }
 
     public Observable<Resource<PokemonOverview>> getPokemonDetail(int id) {
         return db.pokemonDAO().getPokemonDetailById(id)

@@ -10,7 +10,7 @@ public class FlavorTextEntry {
     private String flavorText;
 
     public String getFlavorText() {
-        return flavorText;
+        return flavorText.replace("\n", " ");
     }
 
     public void setFlavorText(String flavorText) {

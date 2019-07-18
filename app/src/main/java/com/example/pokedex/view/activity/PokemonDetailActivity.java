@@ -44,7 +44,7 @@ public class PokemonDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_detail);
 
         Intent intent = getIntent();
-        int pokemonId = intent.getIntExtra("pokemon_id", 1);
+        pokemonId = intent.getIntExtra("pokemon_id", 1);
 
 
         vm = ViewModelProviders.of(this).get(PokemonDetailViewModel.class);
@@ -55,6 +55,7 @@ public class PokemonDetailActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.getMenu().performIdentifierAction(R.id.nav_view, 0);
         navView.setSelectedItemId(R.id.navigation_summary);
+
     }
 
     @Override
@@ -65,5 +66,10 @@ public class PokemonDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

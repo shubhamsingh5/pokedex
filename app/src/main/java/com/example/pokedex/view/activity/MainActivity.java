@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         });
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
+            //TODO: fix pagination
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);

@@ -11,6 +11,7 @@ import com.example.pokedex.data.local.entity.PokemonOverview;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface PokemonDAO {
@@ -24,7 +25,7 @@ public interface PokemonDAO {
     void insertPokemonSpecies(Species species);
 
     @Query("SELECT * FROM pokemons_species where id=:id")
-    Flowable<Species> getPokemonSpeciesById(int id);
+    Single<Species> getPokemonSpeciesById(int id);
 
     @Query("SELECT * FROM pokemons_overview where id=:id")
     Flowable<PokemonOverview> getPokemonDetailById(int id);

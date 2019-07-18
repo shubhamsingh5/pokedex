@@ -1,5 +1,6 @@
 package com.example.pokedex.view.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.R;
 import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.databinding.PokemonBaseFragmentBinding;
+import com.example.pokedex.utils.ColorUtils;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 
 public class PokemonDetailBaseFragment extends Fragment {
@@ -46,14 +48,22 @@ public class PokemonDetailBaseFragment extends Fragment {
                 pokemonDetail = pokemonResource.data;
                 //initialise view elements
                 //type color and type name
-                binding.detailType1.setText(pokemonDetail.getTypes().get(0).getType().getName());
                 if (pokemonDetail.getTypes().size() > 1) {
-                    binding.detailType2.setText(pokemonDetail.getTypes().get(1).getType().getName());
-                    setCLBackground(pokemonDetail.getTypes().get(1).getType().getName());
+                    String type0 = pokemonDetail.getTypes().get(0).getType().getName();
+                    String type1 = pokemonDetail.getTypes().get(1).getType().getName();
+                    binding.detailType1.setText(type0);
+                    binding.detailType1.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, getContext()));
+                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, getContext()));
+                    binding.detailType2.setText(type1);
+                    binding.detailType2.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, getContext()));
                 } else {
-                    setCLBackground(pokemonDetail.getTypes().get(0).getType().getName());
+                    String type0 = pokemonDetail.getTypes().get(0).getType().getName();
+                    binding.detailType1.setText(type0);
+                    binding.detailType1.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, getContext()));
+                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, getContext()));
                     binding.detailType2.setVisibility(View.GONE);
                 }
+
                 binding.detailAbility1.setText(pokemonDetail.getAbilities().get(0).getAbility().getName());
                 if (pokemonDetail.getAbilities().size() > 1) {
                     binding.detailAbility2.setText(pokemonDetail.getAbilities().get(1).getAbility().getName());
@@ -70,65 +80,4 @@ public class PokemonDetailBaseFragment extends Fragment {
         });
         return binding.getRoot();
     }
-
-
-    private void setCLBackground(String type) {
-        switch (type) {
-            case "fire":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.fireType));
-                break;
-            case "water":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.waterType));
-                break;
-            case "electric":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.electricType));
-                break;
-            case "grass":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.grassType));
-                break;
-            case "ice":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.iceType));
-                break;
-            case "fighting":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.fightingType));
-                break;
-            case "poison":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.poisonType));
-                break;
-            case "ground":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.groundType));
-                break;
-            case "flying":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.flyingType));
-                break;
-            case "psychic":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.psychicType));
-                break;
-            case "bug":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.bugType));
-                break;
-            case "rock":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.rockType));
-                break;
-            case "ghost":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.ghostType));
-                break;
-            case "dragon":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.dragonType));
-                break;
-            case "dark":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.darkType));
-                break;
-            case "steel":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.steelType));
-                break;
-            case "fairy":
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.fairyType));
-                break;
-            default:
-                binding.detailConstraintLayout.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.normalType));
-        }
-    }
-
-
 }
