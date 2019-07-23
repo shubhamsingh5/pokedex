@@ -14,4 +14,5 @@
     <string name="stat_sp_attack">Sp. Attack</string>
     <string name="stat_sp_defense">Sp. Defense</string>
     <string name="stat_speed">Speed</string>
+    <string name="detail_physical_caption">Physical</string>
 </resources>

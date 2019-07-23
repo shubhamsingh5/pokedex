@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
     PokemonListViewModel vm;
     List<PokemonOverview> pokemonOverviews = new ArrayList<>();
     private boolean loading = true;
-    int pastVisibleItems, visibleItemCount, totalItemCount, offset;
+    int pastVisibleItems, visibleItemCount, totalItemCount, offset, stored;
 
 
     @Override
@@ -36,12 +38,14 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = this.getPreferences(MODE_PRIVATE);
+        int initVal = sharedPreferences.getInt("stored", 0);
         rv = findViewById(R.id.rv);
         pb = findViewById(R.id.progressBar);
         pokemonOverviews = new ArrayList<>();
         initView();
         vm = ViewModelProviders.of(this).get(PokemonListViewModel.class);
-        vm.init(this);
+        vm.init(this, initVal);
         offset = 0;
         vm.loadPokemonFromApi(offset);
         vm.getPokemons().observe(this, resource -> {
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
                 pb.setVisibility(View.GONE);
                 pokemonOverviews.clear();
                 pokemonOverviews.addAll(resource.data);
+                stored = resource.data.size();
+                loading = true;
                 setupRV();
             }
         });
@@ -66,14 +72,12 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
                     visibleItemCount = gridLayoutManager.getChildCount();
                     totalItemCount = gridLayoutManager.getItemCount();
                     pastVisibleItems = gridLayoutManager.findFirstVisibleItemPosition();
-
+                    offset = totalItemCount;
                     if (loading) {
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                             loading = false;
                             //Do pagination.. i.e. fetch new data
-                            offset += 20;
                             vm.loadPokemonFromApi(offset);
-                            loading = true;
                         }
                     }
                 }
@@ -102,5 +106,14 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         int message = pos + 1;
         intent.putExtra("pokemon_id", message);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onStop();
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= sharedPref.edit();
+        editor.putInt("stored", stored);
+        editor.commit();
     }
 }

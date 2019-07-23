@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.local.entity.MoveDetail;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public interface PokemonDAO {
 
     @Query("SELECT * FROM pokemons_species where id=:id")
     Single<Species> getPokemonSpeciesById(int id);
+
+    @Query("SELECT * FROM pokemons_moves where id=:id")
+    Single<MoveDetail> getPokemonMovesById(int id);
 
     @Query("SELECT * FROM pokemons_overview where id=:id")
     Flowable<PokemonOverview> getPokemonDetailById(int id);

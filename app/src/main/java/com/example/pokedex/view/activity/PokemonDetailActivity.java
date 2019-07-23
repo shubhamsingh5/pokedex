@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.pokedex.R;
 import com.example.pokedex.utils.NavigationUtils;
 import com.example.pokedex.view.fragment.PokemonDetailBaseFragment;
+import com.example.pokedex.view.fragment.PokemonMoveFragment;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,7 +30,7 @@ public class PokemonDetailActivity extends AppCompatActivity {
                         NavigationUtils.setFragment(new PokemonDetailBaseFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
                         return true;
                     case R.id.navigation_moves:
-                        //load move fragment
+                        NavigationUtils.setFragment(new PokemonMoveFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
                         return true;
                     case R.id.navigation_stats:
                         //load stats fragment

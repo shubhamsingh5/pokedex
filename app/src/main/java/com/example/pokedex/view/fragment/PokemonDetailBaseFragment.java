@@ -19,6 +19,7 @@ import com.example.pokedex.R;
 import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.databinding.PokemonBaseFragmentBinding;
 import com.example.pokedex.utils.ColorUtils;
+import com.example.pokedex.view.activity.PokemonDetailActivity;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 
 public class PokemonDetailBaseFragment extends Fragment {
@@ -43,8 +44,9 @@ public class PokemonDetailBaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.pokemon_base_fragment, container, false);
-        vm.getPokemon().observe(getActivity(), pokemonResource -> {
-            if (pokemonResource.isLoaded() && pokemonResource != null) {
+        binding.setLifecycleOwner(this.getActivity());
+        vm.getPokemon().observe(this.getActivity(), pokemonResource -> {
+            if (pokemonResource.isLoaded()) {
                 pokemonDetail = pokemonResource.data;
                 //initialise view elements
                 //type color and type name
@@ -52,15 +54,15 @@ public class PokemonDetailBaseFragment extends Fragment {
                     String type0 = pokemonDetail.getTypes().get(0).getType().getName();
                     String type1 = pokemonDetail.getTypes().get(1).getType().getName();
                     binding.detailType1.setText(type0);
-                    binding.detailType1.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, getContext()));
-                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, getContext()));
+                    binding.detailType1.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));
+                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, this.getActivity()));
                     binding.detailType2.setText(type1);
-                    binding.detailType2.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, getContext()));
+                    binding.detailType2.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, this.getActivity()));
                 } else {
                     String type0 = pokemonDetail.getTypes().get(0).getType().getName();
                     binding.detailType1.setText(type0);
-                    binding.detailType1.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, getContext()));
-                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, getContext()));
+                    binding.detailType1.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));
+                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));
                     binding.detailType2.setVisibility(View.GONE);
                 }
 
@@ -72,10 +74,6 @@ public class PokemonDetailBaseFragment extends Fragment {
                 }
                 binding.setPokemonDetail(pokemonDetail);
 
-                //image of pokemonDetail
-
-
-                //set background
             }
         });
         return binding.getRoot();

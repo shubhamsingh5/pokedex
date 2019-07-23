@@ -18,11 +18,11 @@ public class PokemonListViewModel extends ViewModel {
     private Repository repo;
     private MutableLiveData<Resource<List<PokemonOverview>>> data;
 
-    public void init(Context context) {
+    public void init(Context context, int initVal) {
         if (data != null) {
             return;
         }
-        repo = Repository.getInstance(context);
+        repo = Repository.getInstance(context, initVal);
         data = new MutableLiveData<>();
     }
 

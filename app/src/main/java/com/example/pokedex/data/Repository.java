@@ -3,31 +3,25 @@ package com.example.pokedex.data;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.GridLayout;
 
 import androidx.annotation.NonNull;
 
 import com.example.pokedex.data.local.PokemonDatabase;
 import com.example.pokedex.data.local.entity.Species;
-import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.remote.NetworkBoundResource;
 import com.example.pokedex.data.remote.Resource;
 import com.example.pokedex.data.remote.api.PokeApiService;
 import com.example.pokedex.data.remote.api.RetrofitClient;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
-import com.example.pokedex.data.remote.model.species.SpeciesApiResponse;
+import com.example.pokedex.data.remote.model.move.MoveApiResponse;
+import com.example.pokedex.data.local.entity.MoveDetail;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -36,17 +30,23 @@ public class Repository {
     private PokeApiService webService;
     private static Repository repository;
     private PokemonDatabase db;
+    private int numFetched;
 
-    public static Repository getInstance(Context context) {
+    public static Repository getInstance(Context context, int stored) {
         if (repository == null) {
-            repository = new Repository(context);
+            repository = new Repository(context, stored);
         }
         return repository;
     }
 
-    private Repository(Context context) {
+    public static Repository getInstance(Context context) {
+        return repository;
+    }
+
+    private Repository(Context context, int stored) {
         this.webService = RetrofitClient.getRetrofitClient(PokeApiService.class);
         this.db = PokemonDatabase.getInstance(context);
+        this.numFetched = stored;
     }
 
     public Observable<Resource<List<PokemonOverview>>> getAllPokemon(int offset) {
@@ -57,14 +57,17 @@ public class Repository {
                 Observable.fromIterable(item.getResults())
                         .concatMap(pokemon -> webService.getPokemonOverview(pokemon.getUrl()))
                         .toList()
-                        .subscribe(list -> db.pokemonDAO().insertPokemonOverview(list),
+                        .subscribe(list -> {
+                                    db.pokemonDAO().insertPokemonOverview(list);
+                                    numFetched += list.size();
+                                },
                                 throwable -> Log.e(TAG, throwable.getMessage(), throwable))
                         .dispose();
             }
 
             @Override
             protected boolean shouldFetch() {
-                return false;
+                return numFetched == 0 || numFetched <= offset;
             }
 
             @NonNull
@@ -130,11 +133,21 @@ public class Repository {
 //            }
 //        }.getAsObservable();
 //    }
-
     public Observable<Resource<PokemonOverview>> getPokemonDetail(int id) {
         return db.pokemonDAO().getPokemonDetailById(id)
                 .toObservable()
                 .map(Resource::success)
                 .take(1);
     }
+
+    public Observable<List<MoveDetail>> getMoveDetail(List<MoveApiResponse> moves) {
+        return Observable.fromIterable(moves)
+                .concatMap(move -> {
+                    int id = Integer.parseInt(move.getMove().getUrl().substring(30).replace("/", ""));
+                    return webService.getMoveById(id);
+                })
+                .toList()
+                .toObservable();
+    }
+
 }

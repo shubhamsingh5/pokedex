@@ -10,7 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.remote.model.ability.AbilityApiResponse;
-import com.example.pokedex.data.remote.model.move.MoveApiResponse;
+import com.example.pokedex.data.local.entity.MoveDetail;
 import com.example.pokedex.data.remote.model.stat.StatApiResponse;
 import com.example.pokedex.data.remote.model.type.TypeApiResponse;
 
@@ -24,7 +24,7 @@ public class PokemonDetail {
     private Integer height;
     private Integer id;
     private String locationAreaEncounters;
-    private List<MoveApiResponse> moves = null;
+    private List<MoveDetail> moves = null;
     private String name;
     private Integer order;
     private Species species;
@@ -67,10 +67,10 @@ public class PokemonDetail {
         this.locationAreaEncounters = locationAreaEncounters;
     }
 
-    public List<MoveApiResponse> getMoves() {
+    public List<MoveDetail> getMoves() {
         return moves;
     }
-    public void setMoves(List<MoveApiResponse> moves) {
+    public void setMoves(List<MoveDetail> moves) {
         this.moves = moves;
     }
 
@@ -122,7 +122,6 @@ public class PokemonDetail {
         this.height = overview.getHeight();
         this.id = overview.getId();
         this.locationAreaEncounters = overview.getLocationAreaEncounters();
-        this.moves = overview.getMoves();
         this.name = overview.getName();
         this.order = overview.getOrder();
         this.stats = overview.getStats();
