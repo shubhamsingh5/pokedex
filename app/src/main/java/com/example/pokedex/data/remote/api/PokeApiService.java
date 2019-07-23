@@ -24,7 +24,7 @@ public interface PokeApiService {
     Single<Species> getPokemonSpecies(@Path("id") int id);
 
     @GET("move/{id}")
-    Observable<MoveDetail> getMoveById(@Path("id") int id);
+    Single<MoveDetail> getMoveById(@Path("id") int id);
 //
 //    @GET
 //    Observable<Species> getSpeciesDetail(@Url String url);

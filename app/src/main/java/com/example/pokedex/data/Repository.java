@@ -104,6 +104,18 @@ public class Repository {
                 .doAfterSuccess(species -> db.pokemonDAO().insertPokemonSpecies(species));
     }
 
+    public Observable<MoveDetail> getPokemonMoveFromDb(int id) {
+        return db.pokemonDAO().getPokemonMoveById(id)
+                .onErrorResumeNext(t -> getPokemonMoveFromApi(id))
+                .retry()
+                .toObservable();
+    }
+
+    public Single<MoveDetail> getPokemonMoveFromApi(int id) {
+        return webService.getMoveById(id)
+                .doAfterSuccess(move -> db.pokemonDAO().insertPokemonMove(move));
+    }
+
     //TODO: figure out why this doesn't work
 //    public Observable<Resource<Species>> getPokemonSpecies(int id) {
 //        return new NetworkBoundResource<Species, Species>() {
@@ -144,10 +156,9 @@ public class Repository {
         return Observable.fromIterable(moves)
                 .concatMap(move -> {
                     int id = Integer.parseInt(move.getMove().getUrl().substring(30).replace("/", ""));
-                    return webService.getMoveById(id);
+                    return getPokemonMoveFromDb(id);
                 })
                 .toList()
                 .toObservable();
     }
-
 }

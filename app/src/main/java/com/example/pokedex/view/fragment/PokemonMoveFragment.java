@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pokedex.R;
 import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.data.local.entity.MoveDetail;
+import com.example.pokedex.databinding.PokemonMovesFragmentBinding;
+import com.example.pokedex.utils.ColorUtils;
 import com.example.pokedex.view.adapter.MoveListAdapter;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 
@@ -24,42 +27,54 @@ import java.util.List;
 public class PokemonMoveFragment extends Fragment {
 
     private PokemonDetailViewModel vm;
-    private RecyclerView rv;
     private LinearLayoutManager layoutManager;
     private PokemonDetail pokemonDetail;
     private MoveListAdapter moveListAdapter;
+    private PokemonMovesFragmentBinding binding;
     private List<MoveDetail> moves;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = ViewModelProviders.of(this.getActivity()).get(PokemonDetailViewModel.class);
-
+        //TODO: add progress bar
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.pokemon_moves_fragment, container, false);
-        rv = v.findViewById(R.id.move_rv);
+        binding = DataBindingUtil.inflate(inflater, R.layout.pokemon_moves_fragment, container, false);
+        binding.setLifecycleOwner(this.getActivity());
+
         layoutManager = new LinearLayoutManager(this.getActivity(), RecyclerView.VERTICAL, false);
-        rv.setLayoutManager(layoutManager);
-        rv.addItemDecoration(new DividerItemDecoration(this.getActivity(),
+        binding.moveRv.setLayoutManager(layoutManager);
+        binding.moveRv.addItemDecoration(new DividerItemDecoration(this.getActivity(),
                 DividerItemDecoration.VERTICAL));
-        vm.getMoveData().observe(this.getActivity(), pokemonResource -> {
+
+        vm.getPokemon().observe(getViewLifecycleOwner(), pokemonResource -> {
             if (pokemonResource.isLoaded()) {
-                moves = pokemonResource.data;
+                pokemonDetail = pokemonResource.data;
+                moves = pokemonDetail.getMoves();
+                binding.setPokemonDetail(pokemonDetail);
+                if (pokemonDetail.getTypes().size() > 1) {
+                    String type1 = pokemonDetail.getTypes().get(1).getType().getName();
+                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, this.getActivity()));
+
+                } else {
+                    String type0 = pokemonDetail.getTypes().get(0).getType().getName();
+                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));
+                }
                 setupRV();
             }
         });
-        return v;
+        return binding.getRoot();
     }
 
     private void setupRV() {
         if (moveListAdapter == null) {
             moveListAdapter = new MoveListAdapter(moves);
-            rv.setAdapter(moveListAdapter);
+            binding.moveRv.setAdapter(moveListAdapter);
         } else {
             moveListAdapter.notifyDataSetChanged();
         }

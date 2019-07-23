@@ -24,7 +24,7 @@ public class PokemonDetailViewModel extends ViewModel {
     private Repository repo;
     private MutableLiveData<Resource<PokemonOverview>> pokemonData;
     private MutableLiveData<Species> speciesData;
-    private MutableLiveData<Resource<List<MoveDetail>>> moveData;
+    private MutableLiveData<List<MoveDetail>> moveData;
     private MediatorLiveData<Resource<PokemonDetail>> pokemonDetail;
 
     public void init(Context context) {
@@ -58,13 +58,13 @@ public class PokemonDetailViewModel extends ViewModel {
             }
         });
 
-//        pokemonDetail.addSource(getMoveData(), res -> {
-//            PokemonDetail detail = pokemonDetail.getValue().data;
-//            if (res != null) {
-//                detail.setMoves(res);
-//                pokemonDetail.setValue(Resource.success(detail));
-//            }
-//        });
+        pokemonDetail.addSource(getMoveData(), res -> {
+            PokemonDetail detail = pokemonDetail.getValue().data;
+            if (res != null) {
+                detail.setMoves(res);
+                pokemonDetail.setValue(Resource.success(detail));
+            }
+        });
     }
 
     private void getPokemonData(int id) {
@@ -85,7 +85,7 @@ public class PokemonDetailViewModel extends ViewModel {
         repo.getMoveDetail(moves)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(moveDetails -> getMoveData().postValue(Resource.success(moveDetails)));
+                .subscribe(moveDetails -> getMoveData().postValue(moveDetails));
     }
 
     //TODO: use with NetworkBoundResource implementation
@@ -104,7 +104,7 @@ public class PokemonDetailViewModel extends ViewModel {
         return speciesData;
     }
 
-    public MutableLiveData<Resource<List<MoveDetail>>> getMoveData() {
+    public MutableLiveData<List<MoveDetail>> getMoveData() {
         return moveData;
     }
 

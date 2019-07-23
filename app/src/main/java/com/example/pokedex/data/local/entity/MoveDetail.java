@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.pokedex.data.local.converter.FlavorTextTypeConverter;
+import com.example.pokedex.data.local.converter.PokemonTypeTypeConverter;
 import com.example.pokedex.data.remote.model.move.EffectEntry;
 import com.example.pokedex.data.remote.model.species.FlavorTextEntry;
 import com.example.pokedex.data.remote.model.type.Type;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity(tableName = "pokemons_moves")
 public class MoveDetail {
 
+    @TypeConverters(PokemonTypeTypeConverter.class)
     @SerializedName("type")
     @Expose
     private Type type;

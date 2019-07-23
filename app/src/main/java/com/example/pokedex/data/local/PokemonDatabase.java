@@ -13,6 +13,7 @@ import com.example.pokedex.data.local.converter.FlavorTextTypeConverter;
 import com.example.pokedex.data.local.converter.GeneraTypeConverter;
 import com.example.pokedex.data.local.converter.HabitatTypeConverter;
 import com.example.pokedex.data.local.converter.MoveResponseTypeConverter;
+import com.example.pokedex.data.local.converter.PokemonTypeTypeConverter;
 import com.example.pokedex.data.local.converter.SpeciesTypeConverter;
 import com.example.pokedex.data.local.converter.StatResponseTypeConverter;
 import com.example.pokedex.data.local.converter.TypeResponseTypeConverter;
@@ -24,7 +25,8 @@ import com.example.pokedex.data.local.entity.Species;
 @Database(entities = {PokemonOverview.class, Species.class, MoveDetail.class}, version = 1, exportSchema = false)
 @TypeConverters({AbilityResponseTypeConverter.class, MoveResponseTypeConverter.class,
         StatResponseTypeConverter.class, TypeResponseTypeConverter.class, SpeciesTypeConverter.class,
-        FlavorTextTypeConverter.class, GeneraTypeConverter.class, HabitatTypeConverter.class, EffectEntryTypeConverter.class})
+        FlavorTextTypeConverter.class, GeneraTypeConverter.class, HabitatTypeConverter.class, EffectEntryTypeConverter.class,
+        PokemonTypeTypeConverter.class})
 public abstract class PokemonDatabase extends RoomDatabase {
 
     private static PokemonDatabase INSTANCE;

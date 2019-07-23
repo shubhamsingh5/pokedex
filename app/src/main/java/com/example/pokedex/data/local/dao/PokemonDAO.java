@@ -29,8 +29,12 @@ public interface PokemonDAO {
     Single<Species> getPokemonSpeciesById(int id);
 
     @Query("SELECT * FROM pokemons_moves where id=:id")
-    Single<MoveDetail> getPokemonMovesById(int id);
+    Single<MoveDetail> getPokemonMoveById(int id);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertPokemonMove(MoveDetail move);
 
     @Query("SELECT * FROM pokemons_overview where id=:id")
     Flowable<PokemonOverview> getPokemonDetailById(int id);
+
 }

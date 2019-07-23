@@ -64,6 +64,8 @@ public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveVi
 
     @Override
     public int getItemCount() {
-        return moves.size();
+        if (moves != null)
+            return moves.size();
+        else return  0;
     }
 }

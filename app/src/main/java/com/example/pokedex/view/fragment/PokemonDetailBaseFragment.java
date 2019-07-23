@@ -45,7 +45,7 @@ public class PokemonDetailBaseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.pokemon_base_fragment, container, false);
         binding.setLifecycleOwner(this.getActivity());
-        vm.getPokemon().observe(this.getActivity(), pokemonResource -> {
+        vm.getPokemon().observe(getViewLifecycleOwner(), pokemonResource -> {
             if (pokemonResource.isLoaded()) {
                 pokemonDetail = pokemonResource.data;
                 //initialise view elements
