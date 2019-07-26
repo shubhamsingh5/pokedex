@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedex.R;
-import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.data.local.entity.MoveDetail;
+import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.databinding.PokemonMovesFragmentBinding;
 import com.example.pokedex.utils.ColorUtils;
 import com.example.pokedex.view.adapter.MoveListAdapter;
@@ -47,37 +47,38 @@ public class PokemonMoveFragment extends Fragment {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.pokemon_moves_fragment, container, false);
         binding.setLifecycleOwner(this.getActivity());
-
         layoutManager = new LinearLayoutManager(this.getActivity(), RecyclerView.VERTICAL, false);
         binding.moveRv.setLayoutManager(layoutManager);
         binding.moveRv.addItemDecoration(new DividerItemDecoration(this.getActivity(),
                 DividerItemDecoration.VERTICAL));
 
         vm.getPokemon().observe(getViewLifecycleOwner(), pokemonResource -> {
-            if (pokemonResource.isLoaded()) {
-                pokemonDetail = pokemonResource.data;
-                if (pokemonDetail.getMoves() != null) {
-                    moves.clear();
-                    moves.addAll(pokemonDetail.getMoves());
-                }
-                binding.setPokemonDetail(pokemonDetail);
-                if (pokemonDetail.getTypes().size() > 1) {
-                    String type1 = pokemonDetail.getTypes().get(1).getType().getName();
-                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, this.getActivity()));
-
-                } else {
-                    String type0 = pokemonDetail.getTypes().get(0).getType().getName();
-                    binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));
-                }
-                setupRV();
+            pokemonDetail = pokemonResource.data;
+            if (pokemonDetail.getMoves() != null) {
+                binding.progressBar.setVisibility(View.GONE);
+                moves.clear();
+                moves.addAll(pokemonDetail.getMoves());
+            } else {
+                binding.progressBar.setVisibility(View.VISIBLE);
             }
+            binding.setPokemonDetail(pokemonDetail);
+            if (pokemonDetail.getTypes().size() > 1) {
+                String type1 = pokemonDetail.getTypes().get(1).getType().getName();
+                binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, this.getActivity()));
+
+            } else {
+                String type0 = pokemonDetail.getTypes().get(0).getType().getName();
+                binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));
+            }
+            setupRV();
+
         });
         return binding.getRoot();
     }
 
     private void setupRV() {
         if (moveListAdapter == null) {
-            moveListAdapter = new MoveListAdapter(moves);
+            moveListAdapter = new MoveListAdapter(moves, getContext());
             binding.moveRv.setAdapter(moveListAdapter);
         } else {
             moveListAdapter.notifyDataSetChanged();

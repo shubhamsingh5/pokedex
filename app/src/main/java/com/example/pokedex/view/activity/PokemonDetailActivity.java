@@ -2,6 +2,11 @@ package com.example.pokedex.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.pokedex.R;
 import com.example.pokedex.utils.NavigationUtils;
@@ -11,16 +16,10 @@ import com.example.pokedex.view.fragment.PokemonStatFragment;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
-
-import android.view.MenuItem;
-import android.widget.TextView;
-
 public class PokemonDetailActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private BottomNavigationView navView;
     private PokemonDetailViewModel vm;
     private int pokemonId;
 
@@ -52,11 +51,16 @@ public class PokemonDetailActivity extends AppCompatActivity {
         vm = ViewModelProviders.of(this).get(PokemonDetailViewModel.class);
         vm.init(this);
         vm.getPokemonDetail(pokemonId);
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        final int selected_menu;
+        if(savedInstanceState!=null) {
+            selected_menu = savedInstanceState.getInt("opened_fragment", R.id.navigation_summary);
+        } else {
+            selected_menu = R.id.navigation_summary;
+        }
+        navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navView.getMenu().performIdentifierAction(R.id.nav_view, 0);
-        navView.setSelectedItemId(R.id.navigation_summary);
+        //navView.getMenu().performIdentifierAction(R.id.nav_view, 0);
+        navView.setSelectedItemId(selected_menu);
 
     }
 
@@ -71,7 +75,8 @@ public class PokemonDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("opened_fragment", navView.getSelectedItemId());
     }
 }

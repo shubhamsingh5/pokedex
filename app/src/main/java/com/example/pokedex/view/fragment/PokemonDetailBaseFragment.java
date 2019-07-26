@@ -1,6 +1,5 @@
 package com.example.pokedex.view.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pokedex.R;
 import com.example.pokedex.data.remote.model.PokemonDetail;
 import com.example.pokedex.databinding.PokemonBaseFragmentBinding;
 import com.example.pokedex.utils.ColorUtils;
-import com.example.pokedex.view.activity.PokemonDetailActivity;
 import com.example.pokedex.viewmodel.PokemonDetailViewModel;
 
 public class PokemonDetailBaseFragment extends Fragment {

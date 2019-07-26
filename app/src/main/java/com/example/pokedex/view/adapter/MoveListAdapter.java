@@ -1,5 +1,6 @@
 package com.example.pokedex.view.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedex.R;
 import com.example.pokedex.data.local.entity.MoveDetail;
-
+import com.example.pokedex.utils.ColorUtils;
 
 import java.util.List;
 
 public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveViewHolder> {
 
     private List<MoveDetail> moves;
+    Context context;
 
-    public MoveListAdapter(List<MoveDetail> moves) {
+    public MoveListAdapter(List<MoveDetail> moves, Context context) {
         this.moves = moves;
+        this.context = context;
     }
 
     public class MoveViewHolder extends RecyclerView.ViewHolder {
@@ -28,6 +31,7 @@ public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveVi
         public TextView moveAcc;
         public TextView movePP;
         public TextView moveEffect;
+        public View moveType;
 
         public MoveViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -36,6 +40,7 @@ public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveVi
             movePwr = itemView.findViewById(R.id.move_pwr);
             moveAcc = itemView.findViewById(R.id.move_acc);
             movePP = itemView.findViewById(R.id.move_pp);
+            moveType = itemView.findViewById(R.id.type_indicator);
         }
     }
 
@@ -50,8 +55,18 @@ public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveVi
     @Override
     public void onBindViewHolder(@NonNull MoveViewHolder holder, int position) {
         MoveDetail move = moves.get(position);
+        String effect;
         holder.moveName.setText(move.getName());
-        holder.moveEffect.setText(move.getEffectEntries().get(0).getShortEffect());
+        holder.moveType.setBackgroundColor(ColorUtils.setColorBasedOnType(move.getType().getName(), context));
+        if (move.getEffectChance() != null) {
+            int effectChance = move.getEffectChance();
+            effect = move.getEffectEntries().get(0).getShortEffect().replace("$effect_chance", Integer.toString(effectChance));
+        } else {
+            effect = move.getEffectEntries().get(0).getShortEffect();
+        }
+        holder.moveEffect.setText(effect);
+        //holder.moveType.setText(move.getType().getName());
+        //holder.moveType.setBackgroundColor(ColorUtils.setColorBasedOnType(move.getType().getName(), context));
         if (move.getAccuracy() != null) holder.moveAcc.setText(Integer.toString(move.getAccuracy()));
         else holder.moveAcc.setText("-");
 

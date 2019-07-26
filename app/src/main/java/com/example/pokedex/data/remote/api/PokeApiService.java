@@ -1,9 +1,9 @@
 package com.example.pokedex.data.remote.api;
 
+import com.example.pokedex.data.local.entity.MoveDetail;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
-import com.example.pokedex.data.local.entity.MoveDetail;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;

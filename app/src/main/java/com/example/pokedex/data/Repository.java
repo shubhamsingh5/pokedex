@@ -7,15 +7,15 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.pokedex.data.local.PokemonDatabase;
-import com.example.pokedex.data.local.entity.Species;
+import com.example.pokedex.data.local.entity.MoveDetail;
 import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.remote.NetworkBoundResource;
 import com.example.pokedex.data.remote.Resource;
 import com.example.pokedex.data.remote.api.PokeApiService;
 import com.example.pokedex.data.remote.api.RetrofitClient;
 import com.example.pokedex.data.remote.model.PokeApiResponse;
 import com.example.pokedex.data.remote.model.move.MoveApiResponse;
-import com.example.pokedex.data.local.entity.MoveDetail;
 
 import java.util.List;
 

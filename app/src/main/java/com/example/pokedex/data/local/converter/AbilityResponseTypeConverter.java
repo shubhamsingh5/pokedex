@@ -2,7 +2,6 @@ package com.example.pokedex.data.local.converter;
 
 import androidx.room.TypeConverter;
 
-import com.example.pokedex.data.remote.model.ability.Ability;
 import com.example.pokedex.data.remote.model.ability.AbilityApiResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

@@ -4,8 +4,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.util.List;
-
 import com.example.pokedex.data.local.converter.FlavorTextTypeConverter;
 import com.example.pokedex.data.local.converter.GeneraTypeConverter;
 import com.example.pokedex.data.local.converter.HabitatTypeConverter;
@@ -14,6 +12,8 @@ import com.example.pokedex.data.remote.model.species.Genera;
 import com.example.pokedex.data.remote.model.species.Habitat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 @Entity(tableName = "pokemons_species")
 public class Species {

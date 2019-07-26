@@ -5,9 +5,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.pokedex.data.local.entity.Species;
-import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.local.entity.MoveDetail;
+import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.local.entity.Species;
 
 import java.util.List;
 

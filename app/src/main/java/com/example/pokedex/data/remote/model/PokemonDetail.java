@@ -7,10 +7,10 @@ import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.pokedex.data.local.entity.MoveDetail;
 import com.example.pokedex.data.local.entity.PokemonOverview;
 import com.example.pokedex.data.local.entity.Species;
 import com.example.pokedex.data.remote.model.ability.AbilityApiResponse;
-import com.example.pokedex.data.local.entity.MoveDetail;
 import com.example.pokedex.data.remote.model.stat.StatApiResponse;
 import com.example.pokedex.data.remote.model.type.TypeApiResponse;
 

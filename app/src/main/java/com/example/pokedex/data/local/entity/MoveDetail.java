@@ -39,6 +39,10 @@ public class MoveDetail {
     @Expose
     private Integer id;
 
+    @SerializedName("effect_chance")
+    @Expose
+    private Integer effectChance;
+
     @SerializedName("effect_entries")
     @Expose
     private List<EffectEntry> effectEntries = null;
@@ -92,6 +96,14 @@ public class MoveDetail {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEffectChance() {
+        return effectChance;
+    }
+
+    public void setEffectChance(Integer effectChance) {
+        this.effectChance = effectChance;
     }
 
     public List<EffectEntry> getEffectEntries() {

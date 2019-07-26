@@ -7,12 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pokedex.data.Repository;
-import com.example.pokedex.data.local.entity.PokemonOverview;
-import com.example.pokedex.data.remote.model.PokemonDetail;
-import com.example.pokedex.data.remote.Resource;
-import com.example.pokedex.data.local.entity.Species;
-import com.example.pokedex.data.remote.model.move.MoveApiResponse;
 import com.example.pokedex.data.local.entity.MoveDetail;
+import com.example.pokedex.data.local.entity.PokemonOverview;
+import com.example.pokedex.data.local.entity.Species;
+import com.example.pokedex.data.remote.Resource;
+import com.example.pokedex.data.remote.model.PokemonDetail;
+import com.example.pokedex.data.remote.model.move.MoveApiResponse;
 
 import java.util.List;
 
@@ -39,11 +39,14 @@ public class PokemonDetailViewModel extends ViewModel {
     }
 
     public void getPokemonDetail(int id) {
+        pokemonDetail.removeSource(getPokemonData());
+        pokemonDetail.removeSource(getSpeciesData());
+        pokemonDetail.removeSource(getMoveData());
         getPokemonData(id);
         pokemonDetail.addSource(getPokemonData(), res -> {
             getPokemonSpecies(id);
             getMoveDetails(res.data.getMoves());
-            PokemonDetail detail = null;
+            PokemonDetail detail;
             if (res != null && res.isLoaded()) {
                 detail = new PokemonDetail(res.data);
                 pokemonDetail.setValue(Resource.success(detail));
