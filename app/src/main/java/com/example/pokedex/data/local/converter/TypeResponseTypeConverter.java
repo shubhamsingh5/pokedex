@@ -13,7 +13,8 @@ public class TypeResponseTypeConverter {
 
     @TypeConverter
     public List<TypeApiResponse> fromString(String value) {
-        Type listType = new TypeToken<List<TypeApiResponse>>() {}.getType();
+        Type listType = new TypeToken<List<TypeApiResponse>>() {
+        }.getType();
         List<TypeApiResponse> types = new Gson().fromJson(value, listType);
         return types;
     }

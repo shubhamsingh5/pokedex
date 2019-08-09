@@ -13,7 +13,8 @@ public class StatResponseTypeConverter {
 
     @TypeConverter
     public List<StatApiResponse> fromString(String value) {
-        Type listType = new TypeToken<List<StatApiResponse>>() {}.getType();
+        Type listType = new TypeToken<List<StatApiResponse>>() {
+        }.getType();
         List<StatApiResponse> stats = new Gson().fromJson(value, listType);
         return stats;
     }

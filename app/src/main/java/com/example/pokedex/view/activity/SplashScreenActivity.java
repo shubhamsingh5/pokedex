@@ -11,13 +11,6 @@ import com.example.pokedex.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-        handler.sendEmptyMessageDelayed(100, 1000);
-    }
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -28,4 +21,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen);
+        handler.sendEmptyMessageDelayed(100, 1000);
+    }
 }

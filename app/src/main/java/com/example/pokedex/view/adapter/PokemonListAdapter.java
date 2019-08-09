@@ -25,6 +25,47 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     private RecyclerViewClickListener listener;
     private Context context;
 
+    public PokemonListAdapter(List<PokemonOverview> pokemonOverviews, Context context, RecyclerViewClickListener listener) {
+        this.listener = listener;
+        this.pokemonOverviews = pokemonOverviews;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public PokedexEntryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.pokemon_list_item, parent, false);
+        return new PokedexEntryViewHolder(itemView, listener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull PokedexEntryViewHolder holder, int position) {
+        PokemonOverview result = pokemonOverviews.get(position);
+        holder.name.setText(result.getName().toUpperCase());
+        holder.dex_num.setText(Integer.toString(result.getId()));
+        holder.list_num.setText(Integer.toString(position));
+        List<TypeApiResponse> types = pokemonOverviews.get(position).getTypes();
+        String type = types.get(types.size() - 1).getType().getName();
+        holder.cv.setCardBackgroundColor(ColorUtils.setColorBasedOnType(type, context));
+
+        int id = result.getId();
+        Glide.with(context)
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png")
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.image);
+    }
+
+    @Override
+    public int getItemCount() {
+        return pokemonOverviews.size();
+    }
+
+    public interface RecyclerViewClickListener {
+        void onClick(int pos);
+    }
+
     public class PokedexEntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name;
         public TextView dex_num;
@@ -50,48 +91,6 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         public void onClick(View v) {
             recyclerViewClickListener.onClick(getAdapterPosition());
         }
-    }
-
-    public interface RecyclerViewClickListener {
-        void onClick(int pos);
-    }
-
-
-    public PokemonListAdapter(List<PokemonOverview> pokemonOverviews, Context context, RecyclerViewClickListener listener) {
-        this.listener = listener;
-        this.pokemonOverviews = pokemonOverviews;
-        this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public PokedexEntryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.pokemon_list_item, parent, false);
-        return new PokedexEntryViewHolder(itemView, listener);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull PokedexEntryViewHolder holder, int position) {
-        PokemonOverview result = pokemonOverviews.get(position);
-        holder.name.setText(result.getName().toUpperCase());
-        holder.dex_num.setText(Integer.toString(result.getId()));
-        holder.list_num.setText(Integer.toString(position));
-        List<TypeApiResponse> types = pokemonOverviews.get(position).getTypes();
-        String type = types.get(types.size()-1).getType().getName();
-        holder.cv.setCardBackgroundColor(ColorUtils.setColorBasedOnType(type, context));
-
-        int id = result.getId();
-        Glide.with(context)
-                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png")
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.image);
-    }
-
-    @Override
-    public int getItemCount() {
-        return pokemonOverviews.size();
     }
 
 }

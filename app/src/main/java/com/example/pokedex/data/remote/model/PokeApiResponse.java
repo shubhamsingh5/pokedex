@@ -7,25 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokeApiResponse {
-    public PokeApiResponse() {
-        this.results = new ArrayList<>();
-    }
-
     @SerializedName("count")
     @Expose
     private Integer count;
-
     @SerializedName("next")
     @Expose
     private String next;
-
     @SerializedName("previous")
     @Expose
     private Object previous;
-
     @SerializedName("results")
     @Expose
     private List<Result> results = null;
+
+    public PokeApiResponse() {
+        this.results = new ArrayList<>();
+    }
 
     public Integer getCount() {
         return count;

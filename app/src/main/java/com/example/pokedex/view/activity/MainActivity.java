@@ -23,15 +23,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PokemonListAdapter.RecyclerViewClickListener {
 
-    private RecyclerView rv;
     GridLayoutManager gridLayoutManager;
     ProgressBar pb;
     PokemonListAdapter adapter;
     PokemonListViewModel vm;
     List<PokemonOverview> pokemonOverviews = new ArrayList<>();
-    private boolean loading = true;
     int pastVisibleItems, visibleItemCount, totalItemCount, offset, stored;
-
+    private RecyclerView rv;
+    private boolean loading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
         vm.getPokemons().observe(this, resource -> {
             if (resource.isLoading()) {
                 pb.setVisibility(View.VISIBLE);
-            }
-            else if (resource.isLoaded() && !resource.data.isEmpty()) {
+            } else if (resource.isLoaded() && !resource.data.isEmpty()) {
                 pb.setVisibility(View.GONE);
                 pokemonOverviews.clear();
                 pokemonOverviews.addAll(resource.data);
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements PokemonListAdapte
     protected void onPause() {
         super.onStop();
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor= sharedPref.edit();
+        SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("stored", stored);
         editor.commit();
     }

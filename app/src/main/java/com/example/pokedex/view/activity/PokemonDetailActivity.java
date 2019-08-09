@@ -25,19 +25,19 @@ public class PokemonDetailActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-                switch (item.getItemId()) {
-                    case R.id.navigation_summary:
-                        NavigationUtils.setFragment(new PokemonDetailBaseFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
-                        return true;
-                    case R.id.navigation_moves:
-                        NavigationUtils.setFragment(new PokemonMoveFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
-                        return true;
-                    case R.id.navigation_stats:
-                        NavigationUtils.setFragment(new PokemonStatFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
-                        return true;
-                }
-                return false;
-            };
+        switch (item.getItemId()) {
+            case R.id.navigation_summary:
+                NavigationUtils.setFragment(new PokemonDetailBaseFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
+                return true;
+            case R.id.navigation_moves:
+                NavigationUtils.setFragment(new PokemonMoveFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
+                return true;
+            case R.id.navigation_stats:
+                NavigationUtils.setFragment(new PokemonStatFragment(), PokemonDetailActivity.this, R.id.detail_fragment);
+                return true;
+        }
+        return false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class PokemonDetailActivity extends AppCompatActivity {
         vm.init(this);
         vm.getPokemonDetail(pokemonId);
         final int selected_menu;
-        if(savedInstanceState!=null) {
+        if (savedInstanceState != null) {
             selected_menu = savedInstanceState.getInt("opened_fragment", R.id.navigation_summary);
         } else {
             selected_menu = R.id.navigation_summary;

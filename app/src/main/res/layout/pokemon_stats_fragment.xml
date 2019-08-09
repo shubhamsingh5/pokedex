@@ -74,11 +74,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
                     android:max="255"
+                    android:progress="@{pokemonDetail.stats.get(5).baseStat}"
                     android:progressTint="#D81515"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stat_hp"
                     app:layout_constraintTop_toTopOf="@+id/stat_hp"
-                    android:progress="@{pokemonDetail.stats.get(5).baseStat}"
                     tools:progress="45" />
 
                 <TextView
@@ -104,11 +104,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
                     android:max="255"
+                    android:progress="@{pokemonDetail.stats.get(4).baseStat}"
                     android:progressTint="#D81515"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stat_defense"
                     app:layout_constraintTop_toTopOf="@+id/stat_defense"
-                    android:progress="@{pokemonDetail.stats.get(4).baseStat}"
                     tools:progress="49" />
 
                 <TextView
@@ -135,11 +135,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
                     android:max="255"
+                    android:progress="@{pokemonDetail.stats.get(3).baseStat}"
                     android:progressTint="#D81515"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stat_attack"
                     app:layout_constraintTop_toTopOf="@+id/stat_attack"
-                    android:progress="@{pokemonDetail.stats.get(3).baseStat}"
                     tools:progress="49" />
 
                 <TextView
@@ -166,11 +166,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
                     android:max="255"
+                    android:progress="@{pokemonDetail.stats.get(2).baseStat}"
                     android:progressTint="#D81515"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stat_special_attack"
                     app:layout_constraintTop_toTopOf="@+id/stat_special_attack"
-                    android:progress="@{pokemonDetail.stats.get(2).baseStat}"
                     tools:progress="65" />
 
                 <TextView
@@ -196,11 +196,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
                     android:max="255"
+                    android:progress="@{pokemonDetail.stats.get(1).baseStat}"
                     android:progressTint="#D81515"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stat_special_defense"
                     app:layout_constraintTop_toTopOf="@+id/stat_special_defense"
-                    android:progress="@{pokemonDetail.stats.get(1).baseStat}"
                     tools:progress="65" />
 
                 <TextView
@@ -226,11 +226,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
                     android:max="255"
+                    android:progress="@{pokemonDetail.stats.get(0).baseStat}"
                     android:progressTint="#D81515"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stat_speed"
                     app:layout_constraintTop_toTopOf="@+id/stat_speed"
-                    android:progress="@{pokemonDetail.stats.get(0).baseStat}"
                     tools:progress="45" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

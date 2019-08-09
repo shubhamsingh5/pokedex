@@ -17,31 +17,12 @@ import java.util.List;
 
 public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveViewHolder> {
 
-    private List<MoveDetail> moves;
     Context context;
+    private List<MoveDetail> moves;
 
     public MoveListAdapter(List<MoveDetail> moves, Context context) {
         this.moves = moves;
         this.context = context;
-    }
-
-    public class MoveViewHolder extends RecyclerView.ViewHolder {
-        public TextView moveName;
-        public TextView movePwr;
-        public TextView moveAcc;
-        public TextView movePP;
-        public TextView moveEffect;
-        public View moveType;
-
-        public MoveViewHolder(@NonNull View itemView) {
-            super(itemView);
-            moveName = itemView.findViewById(R.id.move_name);
-            moveEffect = itemView.findViewById(R.id.move_effect);
-            movePwr = itemView.findViewById(R.id.move_pwr);
-            moveAcc = itemView.findViewById(R.id.move_acc);
-            movePP = itemView.findViewById(R.id.move_pp);
-            moveType = itemView.findViewById(R.id.type_indicator);
-        }
     }
 
     @NonNull
@@ -67,7 +48,8 @@ public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveVi
         holder.moveEffect.setText(effect);
         //holder.moveType.setText(move.getType().getName());
         //holder.moveType.setBackgroundColor(ColorUtils.setColorBasedOnType(move.getType().getName(), context));
-        if (move.getAccuracy() != null) holder.moveAcc.setText(Integer.toString(move.getAccuracy()));
+        if (move.getAccuracy() != null)
+            holder.moveAcc.setText(Integer.toString(move.getAccuracy()));
         else holder.moveAcc.setText("-");
 
         if (move.getPower() != null) holder.movePwr.setText(Integer.toString(move.getPower()));
@@ -81,6 +63,25 @@ public class MoveListAdapter extends RecyclerView.Adapter<MoveListAdapter.MoveVi
     public int getItemCount() {
         if (moves != null)
             return moves.size();
-        else return  0;
+        else return 0;
+    }
+
+    public class MoveViewHolder extends RecyclerView.ViewHolder {
+        public TextView moveName;
+        public TextView movePwr;
+        public TextView moveAcc;
+        public TextView movePP;
+        public TextView moveEffect;
+        public View moveType;
+
+        public MoveViewHolder(@NonNull View itemView) {
+            super(itemView);
+            moveName = itemView.findViewById(R.id.move_name);
+            moveEffect = itemView.findViewById(R.id.move_effect);
+            movePwr = itemView.findViewById(R.id.move_pwr);
+            moveAcc = itemView.findViewById(R.id.move_acc);
+            movePP = itemView.findViewById(R.id.move_pp);
+            moveType = itemView.findViewById(R.id.type_indicator);
+        }
     }
 }

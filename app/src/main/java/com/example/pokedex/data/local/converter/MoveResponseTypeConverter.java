@@ -13,7 +13,8 @@ public class MoveResponseTypeConverter {
 
     @TypeConverter
     public List<MoveApiResponse> fromString(String value) {
-        Type listType = new TypeToken<List<MoveApiResponse>>() {}.getType();
+        Type listType = new TypeToken<List<MoveApiResponse>>() {
+        }.getType();
         List<MoveApiResponse> moves = new Gson().fromJson(value, listType);
         return moves;
     }

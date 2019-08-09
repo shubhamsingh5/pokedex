@@ -27,10 +27,16 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Repository {
 
-    private PokeApiService webService;
     private static Repository repository;
+    private PokeApiService webService;
     private PokemonDatabase db;
     private int numFetched;
+
+    private Repository(Context context, int stored) {
+        this.webService = RetrofitClient.getRetrofitClient(PokeApiService.class);
+        this.db = PokemonDatabase.getInstance(context);
+        this.numFetched = stored;
+    }
 
     public static Repository getInstance(Context context, int stored) {
         if (repository == null) {
@@ -41,12 +47,6 @@ public class Repository {
 
     public static Repository getInstance(Context context) {
         return repository;
-    }
-
-    private Repository(Context context, int stored) {
-        this.webService = RetrofitClient.getRetrofitClient(PokeApiService.class);
-        this.db = PokemonDatabase.getInstance(context);
-        this.numFetched = stored;
     }
 
     public Observable<Resource<List<PokemonOverview>>> getAllPokemon(int offset) {

@@ -101,9 +101,9 @@
         android:id="@+id/type_indicator"
         android:layout_width="15dp"
         android:layout_height="84dp"
-        tools:background="@color/grassType"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/grassType" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

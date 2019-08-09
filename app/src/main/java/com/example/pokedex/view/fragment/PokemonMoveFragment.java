@@ -38,7 +38,6 @@ public class PokemonMoveFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = ViewModelProviders.of(this.getActivity()).get(PokemonDetailViewModel.class);
-        //TODO: add progress bar
     }
 
     @Nullable
@@ -61,11 +60,11 @@ public class PokemonMoveFragment extends Fragment {
             } else {
                 binding.progressBar.setVisibility(View.VISIBLE);
             }
+
             binding.setPokemonDetail(pokemonDetail);
             if (pokemonDetail.getTypes().size() > 1) {
                 String type1 = pokemonDetail.getTypes().get(1).getType().getName();
                 binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type1, this.getActivity()));
-
             } else {
                 String type0 = pokemonDetail.getTypes().get(0).getType().getName();
                 binding.detailConstraintLayout.setBackgroundColor(ColorUtils.setColorBasedOnType(type0, this.getActivity()));

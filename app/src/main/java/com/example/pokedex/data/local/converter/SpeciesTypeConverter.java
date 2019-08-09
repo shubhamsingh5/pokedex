@@ -12,7 +12,8 @@ public class SpeciesTypeConverter {
 
     @TypeConverter
     public Species fromString(String value) {
-        Type listType = new TypeToken<Species>() {}.getType();
+        Type listType = new TypeToken<Species>() {
+        }.getType();
         Species species = new Gson().fromJson(value, listType);
         return species;
     }

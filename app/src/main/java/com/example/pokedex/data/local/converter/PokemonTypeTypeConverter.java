@@ -11,7 +11,8 @@ public class PokemonTypeTypeConverter {
 
     @TypeConverter
     public com.example.pokedex.data.remote.model.type.Type fromString(String value) {
-        Type typeType = new TypeToken<com.example.pokedex.data.remote.model.type.Type>() {}.getType();
+        Type typeType = new TypeToken<com.example.pokedex.data.remote.model.type.Type>() {
+        }.getType();
         com.example.pokedex.data.remote.model.type.Type type = new Gson().fromJson(value, typeType);
         return type;
     }
